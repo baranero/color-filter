@@ -14,20 +14,13 @@ const App: React.FC = () => {
 
   const [colorsArray, setColorsArray] = useState<Colors[]>(defaultColors)
 
-  console.log(colorsArray);
-
   useEffect(() => {
     
     let localStorageColors = localStorage.getItem('enteredColors')
     if (localStorageColors === null) {
       localStorage.setItem('enteredColors', JSON.stringify(defaultColors))
-    }
-    
-    if (localStorageColors) {
-      setColorsArray(JSON.parse(localStorageColors))
     } else {
-      
-      
+      setColorsArray(JSON.parse(localStorageColors))
     }
   }, [])
 
@@ -38,12 +31,15 @@ const App: React.FC = () => {
     setColorsArray([...colorsArray, color])
     localStorage.setItem('enteredColors', JSON.stringify([...colorsArray, color]))
   }
-console.log(colorsArray);
 
+  const removeColor = (id: string) => {
+    setColorsArray(prev => prev.filter(item => item.id !== id))
+    localStorage.setItem('enteredColors', JSON.stringify([...colorsArray]))
+  }
   return (
     <>
       <NewColor onAddColor={addColorToArray}/>
-      <ColorsContainer/>
+      <ColorsContainer onRemoveColor={removeColor}/>
     </>
   );
 }
