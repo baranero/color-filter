@@ -9,13 +9,30 @@ export interface Colors {
 }
 
 
-function App() {
+const App: React.FC = () => {
+
+  const [colorsArray, setColorsArray] = useState<Colors[]>([])
 
 
+
+  const addColorToArray = (color: Colors) => {
+    
+    setColorsArray([...colorsArray, color])
+    localStorage.setItem('enteredColors', JSON.stringify([...colorsArray, color]))
+  }
+
+      useEffect(() => {
+    
+    let localStorageColors = localStorage.getItem('enteredColors')
+    if (localStorageColors !== null) {
+      setColorsArray(JSON.parse(localStorageColors))
+    }
+    
+  }, [])
 
   return (
     <>
-      <NewColor/>
+      <NewColor onAddColor={addColorToArray}/>
       <ColorsContainer/>
     </>
   );

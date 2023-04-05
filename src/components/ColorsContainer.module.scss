@@ -9,12 +9,12 @@
     width: 100px;
     height: 100px;
     border: 1px solid #979797;
-    margin: 10px;
+    margin: 30px 10px;
     border-radius: 10px;
   }
 
-  &-user {
-    background: var(--color-user);
+  p {
+    margin-top: 120px;
   }
 
   &-default {
@@ -30,4 +30,11 @@
       background: var(--color-blue);
     }
   }
+
+  @for $i from 4 to str-length($number-of-child) {
+    &:nth-child(#{$i}) {
+      background: var(--color-user-#{$i});
+    }
+  }
+
 }

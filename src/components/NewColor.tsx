@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react'
 import classes from './NewColor.module.scss'
 import { Colors } from '../App'
 
+interface NewColorProps {
+  onAddColor: (enteredColor: Colors) => void
+}
 
-const NewColor: React.FC = () => {
+const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
 
   const defaultValues = {
     id: '',
@@ -13,7 +16,7 @@ const NewColor: React.FC = () => {
 
   const [enteredColor, setEnteredColor] = useState<Colors>(defaultValues)
 
-  let arrayOfColors: Colors[] = []
+  // let arrayOfColors: Colors[] = []
 
   let inputValueisIncorrect: boolean = enteredColor.color.includes('#', 1)
 
@@ -27,32 +30,31 @@ const NewColor: React.FC = () => {
     } else {
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
-        color: event.target.value,
+        color: event.target.value.toUpperCase(),
         addedByUser: true
       })
     }
   }
 
+  // useEffect(() => {
+  //   if (localStorage.getItem('enteredColor') !== null) {
+  //     document.documentElement.style.setProperty("--color-user", JSON.parse(localStorage.getItem('enteredColor') || "").color)
+  //   }
+  // }, [enteredColor])
 
-
-  useEffect(() => {
-    if (localStorage.getItem('enteredColor') !== null) {
-      document.documentElement.style.setProperty("--color-user", JSON.parse(localStorage.getItem('enteredColor') || "").color)
-    }
-  }, [enteredColor])
-
-
+  // console.log(enteredColor);
+  
  
   const submitHandler = (event: React.FormEvent): void => {
-    arrayOfColors = JSON.parse(localStorage.getItem('enteredColor') || '[]')
-    arrayOfColors.push(enteredColor)
-    localStorage.setItem('enteredColor', JSON.stringify(arrayOfColors))
-
+    // arrayOfColors = JSON.parse(localStorage.getItem('enteredColor') || '[]')
+    // arrayOfColors.push(enteredColor)
+    // localStorage.setItem('enteredColor', JSON.stringify(arrayOfColors))
+    onAddColor(enteredColor)
     event.preventDefault()
 
 
-    localStorage.setItem("enteredColor", JSON.stringify(arrayOfColors))
-    document.documentElement.style.setProperty("--color-user", JSON.parse(localStorage.getItem('enteredColor') || "").color);
+    // localStorage.setItem("enteredColor", JSON.stringify(arrayOfColors))
+    // document.documentElement.style.setProperty("--color-user", JSON.parse(localStorage.getItem('enteredColor') || "").color);
     setEnteredColor(defaultValues)
   }
 
