@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import NewColor from './components/NewColor';
 import ColorsContainer from './components/ColorsContainer';
+import { defaultColors } from './data/defaultColors';
 
 export interface Colors {
   id: string,
@@ -11,7 +12,24 @@ export interface Colors {
 
 const App: React.FC = () => {
 
-  const [colorsArray, setColorsArray] = useState<Colors[]>([])
+  const [colorsArray, setColorsArray] = useState<Colors[]>(defaultColors)
+
+  console.log(colorsArray);
+
+  useEffect(() => {
+    
+    let localStorageColors = localStorage.getItem('enteredColors')
+    if (localStorageColors === null) {
+      localStorage.setItem('enteredColors', JSON.stringify(defaultColors))
+    }
+    
+    if (localStorageColors) {
+      setColorsArray(JSON.parse(localStorageColors))
+    } else {
+      
+      
+    }
+  }, [])
 
 
 
@@ -20,15 +38,7 @@ const App: React.FC = () => {
     setColorsArray([...colorsArray, color])
     localStorage.setItem('enteredColors', JSON.stringify([...colorsArray, color]))
   }
-
-      useEffect(() => {
-    
-    let localStorageColors = localStorage.getItem('enteredColors')
-    if (localStorageColors !== null) {
-      setColorsArray(JSON.parse(localStorageColors))
-    }
-    
-  }, [])
+console.log(colorsArray);
 
   return (
     <>

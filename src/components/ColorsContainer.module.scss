@@ -5,35 +5,19 @@
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
-  div {
-    width: 100px;
-    height: 100px;
-    border: 1px solid #979797;
-    margin: 30px 10px;
-    border-radius: 10px;
-  }
 
   p {
     margin-top: 120px;
   }
 
-  &-default {
-    &-red {
-      background: var(--color-red);
-    }
-
-    &-green {
-      background: var(--color-green);
-    }
-
-    &-blue {
-      background: var(--color-blue);
-    }
-  }
-
-  @for $i from 4 to str-length($number-of-child) {
-    &:nth-child(#{$i}) {
+  @for $i from 1 to str-length($number-of-child) {
+    &-item:nth-child(#{$i}) {
       background: var(--color-user-#{$i});
+      width: 100px;
+      height: 100px;
+      border: 1px solid #979797;
+      margin: 30px 10px;
+      border-radius: 10px;
     }
   }
 
