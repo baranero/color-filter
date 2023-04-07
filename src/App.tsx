@@ -9,33 +9,34 @@ export interface Colors {
   addedByUser: boolean
 }
 
-
 const App: React.FC = () => {
 
-  const [colorsArray, setColorsArray] = useState<Colors[]>(defaultColors)
-
+  const [colorsArray, setColorsArray] = useState<Colors[]>([])
+  
   useEffect(() => {
-    
-    let localStorageColors = localStorage.getItem('enteredColors')
-    if (localStorageColors === null) {
-      localStorage.setItem('enteredColors', JSON.stringify(defaultColors))
+    const colorsFromLocalStorage = JSON.parse(localStorage.getItem('enteredColors')!)
+    if (colorsFromLocalStorage) {
+      setColorsArray(colorsFromLocalStorage)
+      console.log("OK");
+      
     } else {
-      setColorsArray(JSON.parse(localStorageColors))
+      localStorage.setItem('enteredColors', JSON.stringify(defaultColors))
+      console.log("OKOK");
     }
   }, [])
 
-
+  const removeColor = (id: string) => {
+    let colorToRemove = colorsArray.filter(item => item.id !== id)
+    setColorsArray(colorToRemove)
+    localStorage.setItem('enteredColors', JSON.stringify(colorToRemove))
+    console.log(colorsArray);
+  }
 
   const addColorToArray = (color: Colors) => {
-    
     setColorsArray([...colorsArray, color])
     localStorage.setItem('enteredColors', JSON.stringify([...colorsArray, color]))
   }
-
-  const removeColor = (id: string) => {
-    setColorsArray(prev => prev.filter(item => item.id !== id))
-    localStorage.setItem('enteredColors', JSON.stringify([...colorsArray]))
-  }
+  
   return (
     <>
       <NewColor onAddColor={addColorToArray}/>

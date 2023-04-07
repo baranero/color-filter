@@ -16,8 +16,6 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
 
   const [enteredColor, setEnteredColor] = useState<Colors>(defaultValues)
 
-  // let arrayOfColors: Colors[] = []
-
   let inputValueisIncorrect: boolean = enteredColor.color.includes('#', 1)
 
   const colorChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -36,25 +34,10 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
     }
   }
 
-  // useEffect(() => {
-  //   if (localStorage.getItem('enteredColor') !== null) {
-  //     document.documentElement.style.setProperty("--color-user", JSON.parse(localStorage.getItem('enteredColor') || "").color)
-  //   }
-  // }, [enteredColor])
-
-  // console.log(enteredColor);
-  
- 
   const submitHandler = (event: React.FormEvent): void => {
-    // arrayOfColors = JSON.parse(localStorage.getItem('enteredColor') || '[]')
-    // arrayOfColors.push(enteredColor)
-    // localStorage.setItem('enteredColor', JSON.stringify(arrayOfColors))
+
     onAddColor(enteredColor)
     event.preventDefault()
-
-
-    // localStorage.setItem("enteredColor", JSON.stringify(arrayOfColors))
-    // document.documentElement.style.setProperty("--color-user", JSON.parse(localStorage.getItem('enteredColor') || "").color);
     setEnteredColor(defaultValues)
   }
 
