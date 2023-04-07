@@ -10,25 +10,38 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
 
   const defaultValues = {
     id: '',
-    color: '',
+    hexColor: '',
+    rgbColor: {r: null!, g: null!, b: null!},
     addedByUser: true
   }
 
   const [enteredColor, setEnteredColor] = useState<Colors>(defaultValues)
 
-  let inputValueisIncorrect: boolean = enteredColor.color.includes('#', 1)
+  let inputValueisIncorrect: boolean = enteredColor.hexColor.includes('#', 1)
+
+  const hexToRgb = (hex: string) => {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
+  
 
   const colorChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
     if (inputValueisIncorrect) {
       setEnteredColor({
         id: '',
-        color: enteredColor.color.slice(0, -1),
+        hexColor: enteredColor.hexColor.slice(0, -1),
+        rgbColor: {r: null!, g: null!, b: null!},
         addedByUser: true
       })
     } else {
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
-        color: event.target.value.toUpperCase(),
+        hexColor: event.target.value.toUpperCase(),
+        rgbColor: hexToRgb(event.target.value)!,
         addedByUser: true
       })
     }
@@ -36,8 +49,9 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
 
   const submitHandler = (event: React.FormEvent): void => {
 
-    onAddColor(enteredColor)
+    
     event.preventDefault()
+    onAddColor(enteredColor)
     setEnteredColor(defaultValues)
   }
 
@@ -48,7 +62,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
         className={classes[inputValueisIncorrect ? 'color-form-input-wrong' : 'color-form-input']}
         id='color'
         type='text'
-        value={enteredColor.color}
+        value={enteredColor.hexColor}
         onChange={colorChangeHandler}
         placeholder='Input color in HEX format (eg. #3F3F3F)'
         maxLength={7}

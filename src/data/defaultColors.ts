@@ -4,17 +4,20 @@ import { Colors } from "../App";
 export const defaultColors: Colors[] = [
   {
     id: '1',
-    color: "#FF0000",
+    hexColor: "#FF0000",
+    rgbColor: {r: 255, g: 0, b: 0},
     addedByUser: false
   },
   {
     id: '2',
-    color: "#00FF00",
+    hexColor: "#00FF00",
+    rgbColor: {r: 0, g: 255, b: 0},
     addedByUser: false
   },
   {
     id: '3',
-    color: "#0000FF",
+    hexColor: "#0000FF",
+    rgbColor: {r: 0, g: 0, b: 255},
     addedByUser: false
   },
 ]

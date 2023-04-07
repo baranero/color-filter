@@ -10,17 +10,6 @@ interface RemoveColorProps {
 const ColorsContainer: React.FC<RemoveColorProps> = ({ onRemoveColor }) => {
 
   let colorsArrayLocalStorage = (JSON.parse(localStorage.getItem('enteredColors')!))
-  console.log(colorsArrayLocalStorage);
-  
-  useEffect(() => {
-
-      document.documentElement.style.setProperty(`--number-of-child`, colorsArrayLocalStorage?.length + 3)
-      if (colorsArrayLocalStorage !== null) { 
-        for (let i=0; i<colorsArrayLocalStorage.length; i++) {
-          document.documentElement.style.setProperty(`--color-user-${i+1}`, colorsArrayLocalStorage[i].color)
-        }
-      }
-  }, [colorsArrayLocalStorage])
 
 return (
   <div className={classes['colors']}>
@@ -32,7 +21,7 @@ return (
             } className={classes['colors-container-item-button']}>X</button>}
             
           </div>
-          <p className={classes['colors-container-item-name']}>{item.color}</p>
+          <p className={classes['colors-container-item-name']}>{item.hexColor}</p>
         </div>
       )
     })}
