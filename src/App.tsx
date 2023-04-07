@@ -46,7 +46,7 @@ const App: React.FC = () => {
     }
 
 
-  }, [colorsArray.length, colorsFromLocalStorage?.length])
+  }, [colorsArray?.length, colorsFromLocalStorage?.length])
 
   useEffect(() => {
 
