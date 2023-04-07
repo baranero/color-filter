@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { defaultColors } from '../data/defaultColors';
+import React from 'react';
 import classes from './ColorsContainer.module.scss'
 import { Colors, RemoveColorProps } from '../App';
 import ColorItem from './ColorItem';
@@ -10,16 +9,7 @@ const ColorsContainer: React.FC<RemoveColorProps> = (props) => {
 
 let colorsArrayLocalStorage = (JSON.parse(localStorage.getItem('enteredColors')!))
 
-useEffect(() => {
-  JSON.parse(localStorage.getItem('enteredColors')!)
-  
-}, [colorsArrayLocalStorage])
-
-const removeColorFromArray = (color: string) => {
-  // localStorage.setItem('enteredColors', JSON.stringify(color))
-  // console.log(JSON.parse(localStorage.getItem('enteredColors')!));
-  console.log(color);
-  
+const removeColorFromArray = (color: string) => {  
   props.onRemoveColor(color)
 }
 
