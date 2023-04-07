@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import NewColor from './components/NewColor';
 import ColorsContainer, { ColorItemProps } from './components/ColorsContainer';
 import { defaultColors } from './data/defaultColors';
+import ColorsFilter from './components/ColorsFilter';
 
 export interface Colors {
   id: string,
@@ -76,6 +77,7 @@ console.log(colorsFromLocalStorage);
   return (
     <>
       <NewColor onAddColor={addColorToArray}/>
+      <ColorsFilter/>
       <ColorsContainer onRemoveColor={removeColor}/>
     </>
   )

@@ -14,7 +14,6 @@
     justify-content: center;
     align-items: center;
 
-
     @for $i from 1 to str-length($number-of-child) {
       &:nth-child(#{$i}) {
         background: var(--color-user-#{$i});
@@ -23,22 +22,35 @@
         border-radius: 10px;
         width: 100px;
         height: 100px;
+
       }
     }
 
     &-item {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      justify-content: left;
+      position: absolute;
 
       &-button {
-        margin-top: 80px;
+        border: none;
+        border-radius: 100%;
+        width: 30px;
+        height: 30px;
+        background-color: #ffffff9b;
       }
 
-      &-name {
-        margin-top: 50px;
+      &-button:hover {
+        background-color: #FFFFFF;
+        width: 40px;
+        height: 40px;
+        transition: 0.2s;
       }
+
+
+    }
+    &-name {
+      margin-top: 160px;
     }
   }
 }

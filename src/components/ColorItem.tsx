@@ -22,12 +22,15 @@ class ColorItem extends Component<ColorItemProps, {colorsArrayLocalStorage: Colo
 
   render() {
     return (
+      <>
           <div
            className={classes['colors-container-item']} >
             {this.props.addedByUser && <button value={this.props.id} onClick={(event) => this.removeColor(this.props.id)
             } className={classes['colors-container-item-button']}>X</button>}
-            <p className={classes['colors-container-item-name']}>{this.props.hexColor}</p>
+            
           </div>
+          <p className={classes['colors-container-name']}>{this.props.hexColor}</p>
+          </>
     )
   }
 }
