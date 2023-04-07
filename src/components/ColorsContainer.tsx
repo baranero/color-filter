@@ -1,27 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { defaultColors } from '../data/defaultColors';
 import classes from './ColorsContainer.module.scss'
-import { Colors } from '../App';
+import { Colors, RemoveColorProps } from '../App';
+import ColorItem from './ColorItem';
 
-interface RemoveColorProps {
-  onRemoveColor: (id: string) => void;
+export type ColorItemProps = Colors & RemoveColorProps
+
+const ColorsContainer: React.FC<RemoveColorProps> = (props) => {
+
+let colorsArrayLocalStorage = (JSON.parse(localStorage.getItem('enteredColors')!))
+
+useEffect(() => {
+  JSON.parse(localStorage.getItem('enteredColors')!)
+  
+}, [colorsArrayLocalStorage])
+
+const removeColorFromArray = (color: string) => {
+  // localStorage.setItem('enteredColors', JSON.stringify(color))
+  // console.log(JSON.parse(localStorage.getItem('enteredColors')!));
+  console.log(color);
+  
+  props.onRemoveColor(color)
 }
-
-const ColorsContainer: React.FC<RemoveColorProps> = ({ onRemoveColor }) => {
-
-  let colorsArrayLocalStorage = (JSON.parse(localStorage.getItem('enteredColors')!))
 
 return (
   <div className={classes['colors']}>
-    {colorsArrayLocalStorage && colorsArrayLocalStorage.map((item: Colors) => {
+    {colorsArrayLocalStorage && colorsArrayLocalStorage.map((item: ColorItemProps) => {
       return (
         <div key={item.id} className={classes['colors-container']}>
-          <div className={classes['colors-container-item']} >
-            {item.addedByUser && <button value={item.id} onClick={(event) => onRemoveColor(event.currentTarget.value)
-            } className={classes['colors-container-item-button']}>X</button>}
-            
-          </div>
-          <p className={classes['colors-container-item-name']}>{item.hexColor}</p>
+          <ColorItem id={item.id} hexColor={item.hexColor} rgbColor={item.rgbColor} addedByUser={item.addedByUser} onRemoveColor={removeColorFromArray}/>
         </div>
       )
     })}
