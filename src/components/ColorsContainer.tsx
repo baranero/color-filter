@@ -24,10 +24,13 @@ const removeColorFromArray = (color: string) => {
 
 console.log(filteredColors);
 const redCheckbox = document.getElementById("red") as HTMLInputElement | null
+const greenCheckbox = document.getElementById("green") as HTMLInputElement | null
+const blueCheckbox = document.getElementById("blue") as HTMLInputElement | null
+const saturationCheckbox = document.getElementById("saturation") as HTMLInputElement | null
 console.log(redCheckbox?.checked);
 
 
-if (filteredColors.length > 0 || redCheckbox?.checked) {
+if (filteredColors.length > 0 || redCheckbox?.checked || greenCheckbox?.checked || blueCheckbox?.checked || saturationCheckbox?.checked) {
   return (
     <div className={classes['colors']}>
 
