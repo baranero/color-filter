@@ -21,6 +21,10 @@ const ColorsFilter = ({ filteredColors, setFilteredColors, colorsArray }: Colors
     if (redCheckbox?.checked && greenCheckbox?.checked && blueCheckbox?.checked && saturationCheckbox?.checked) {
       setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.r > 127 && colors.rgbColor.g > 127 && colors.rgbColor.b > 127 && colors.hslColor.s > 50))
 
+      // 2, 3, 4 checkboxes
+    } else if (greenCheckbox?.checked && blueCheckbox?.checked && saturationCheckbox?.checked) {
+      setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.g > 127 && colors.rgbColor.b > 127 && colors.hslColor.s > 50))
+
       // 1, 2, 3 checkboxes
     } else if (redCheckbox?.checked && greenCheckbox?.checked && blueCheckbox?.checked) {
       setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.r > 127 && colors.rgbColor.g > 127 && colors.rgbColor.b > 127))
@@ -33,12 +37,8 @@ const ColorsFilter = ({ filteredColors, setFilteredColors, colorsArray }: Colors
     } else if ( redCheckbox?.checked && blueCheckbox?.checked && saturationCheckbox?.checked) {
       setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.r > 127 && colors.rgbColor.b > 127 && colors.hslColor.s > 50))
 
-      // 2, 3, 4 checkboxes
-    } else if (greenCheckbox?.checked && blueCheckbox?.checked && saturationCheckbox?.checked) {
-      setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.g > 127 && colors.rgbColor.b > 127 && colors.hslColor.s > 50))
-
       // 1, 2 checkboxes
-    } else if (redCheckbox?.checked && greenCheckbox?.checked) {
+    }  else if (redCheckbox?.checked && greenCheckbox?.checked) {
       setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.r > 127 && colors.rgbColor.g > 127))
 
       // 1, 3 checkboxes
