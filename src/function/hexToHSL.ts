@@ -1,8 +1,7 @@
 import { hexToRgb } from "./hexToRGB";
 
 export const hexToHSL = (hex: string) => {
-  // Convert hex to RGB first
-
+  // Convert hex to RGB first.
   let r: number = 0,
     g: number = 0,
     b: number = 0;

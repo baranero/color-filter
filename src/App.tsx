@@ -91,7 +91,7 @@ const App: React.FC = () => {
       setSortedColors(colorsToSort);
       localStorage.setItem("enteredColors", JSON.stringify(colorsToSort)); // set sorted colors in local storage
     }
-  }, [colorsFromLocalStorage.length, sortedColors.length, colorsArray.length]);
+  }, [colorsFromLocalStorage?.length, sortedColors.length, colorsArray.length]);
 
   // remove color added by user
   const removeColor = (id: string) => {
