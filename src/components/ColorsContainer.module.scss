@@ -1,12 +1,10 @@
-@import '../styles/variables';
+@import "../styles/variables";
 
 .colors {
   display: flex;
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
-
-
 
   &-container {
     display: flex;
@@ -22,7 +20,6 @@
         border-radius: 10px;
         width: 100px;
         height: 100px;
-
       }
     }
 
@@ -41,13 +38,11 @@
       }
 
       &-button:hover {
-        background-color: #FFFFFF;
+        background-color: #ffffff;
         width: 40px;
         height: 40px;
         transition: 0.2s;
       }
-
-
     }
     &-name {
       margin-top: 160px;

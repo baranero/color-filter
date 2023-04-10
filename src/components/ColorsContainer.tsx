@@ -1,63 +1,91 @@
-import React, { SetStateAction, useEffect } from 'react';
-import classes from './ColorsContainer.module.scss'
-import { Colors } from '../App';
-import ColorItem from './ColorItem';
+import React, { SetStateAction, useEffect } from "react";
+import classes from "./ColorsContainer.module.scss";
+import { Colors } from "../App";
+import ColorItem from "./ColorItem";
 
 export type ColorItemProps = Colors & {
-  onRemoveColor: (id: string) => void
-}
+  onRemoveColor: (id: string) => void;
+};
 
 interface ColorsContainerProps {
   sortedColors: Colors[];
   setSortedColors: React.Dispatch<SetStateAction<Colors[]>>;
   filteredColors: Colors[];
-  onRemoveColor: (id: string) => void
+  onRemoveColor: (id: string) => void;
 }
 
-const ColorsContainer = ({ sortedColors, onRemoveColor, filteredColors }: ColorsContainerProps) => {
+const ColorsContainer = ({
+  sortedColors,
+  onRemoveColor,
+  filteredColors,
+}: ColorsContainerProps) => {
 
-// let colorsFromLocalStorage = JSON.parse(localStorage.getItem('enteredColors')!)
+  //pas remove function through components
+  const removeColorFromArray = (color: string) => {
+    onRemoveColor(color);
+  };
 
-const removeColorFromArray = (color: string) => {  
-  onRemoveColor(color)
-}
+    // check if inputs are checked
+  const redCheckbox = document.getElementById("red") as HTMLInputElement | null;
+  const greenCheckbox = document.getElementById(
+    "green"
+  ) as HTMLInputElement | null;
+  const blueCheckbox = document.getElementById(
+    "blue"
+  ) as HTMLInputElement | null;
+  const saturationCheckbox = document.getElementById(
+    "saturation"
+  ) as HTMLInputElement | null;
 
-console.log(filteredColors);
-const redCheckbox = document.getElementById("red") as HTMLInputElement | null
-const greenCheckbox = document.getElementById("green") as HTMLInputElement | null
-const blueCheckbox = document.getElementById("blue") as HTMLInputElement | null
-const saturationCheckbox = document.getElementById("saturation") as HTMLInputElement | null
-console.log(redCheckbox?.checked);
+    // if checkbox is checked display filtered colors
+  if (
+    filteredColors.length > 0 ||
+    redCheckbox?.checked ||
+    greenCheckbox?.checked ||
+    blueCheckbox?.checked ||
+    saturationCheckbox?.checked
+  ) {
+    return (
+      <div className={classes["colors"]}>
+        {filteredColors &&
+          filteredColors?.map((item: Colors) => {
+            return (
+              <div key={item.id} className={classes["colors-container"]}>
+                <ColorItem
+                  id={item.id}
+                  hexColor={item.hexColor}
+                  rgbColor={item.rgbColor}
+                  hslColor={item.hslColor}
+                  addedByUser={item.addedByUser}
+                  onRemoveColor={removeColorFromArray}
+                />
+              </div>
+            );
+          })}
+      </div>
+    );
+    // if checkbox is not checked display all colors
+  } else {
+    return (
+      <div className={classes["colors"]}>
+        {sortedColors &&
+          sortedColors?.map((item: Colors) => {
+            return (
+              <div key={item.id} className={classes["colors-container"]}>
+                <ColorItem
+                  id={item.id}
+                  hexColor={item.hexColor}
+                  rgbColor={item.rgbColor}
+                  hslColor={item.hslColor}
+                  addedByUser={item.addedByUser}
+                  onRemoveColor={removeColorFromArray}
+                />
+              </div>
+            );
+          })}
+      </div>
+    );
+  }
+};
 
-
-if (filteredColors.length > 0 || redCheckbox?.checked || greenCheckbox?.checked || blueCheckbox?.checked || saturationCheckbox?.checked) {
-  return (
-    <div className={classes['colors']}>
-
-{filteredColors && filteredColors?.map((item: Colors) => {
-      return (
-        <div key={item.id} className={classes['colors-container']}>
-          <ColorItem id={item.id} hexColor={item.hexColor} rgbColor={item.rgbColor} hslColor={item.hslColor} addedByUser={item.addedByUser} onRemoveColor={removeColorFromArray}/>
-        </div>
-      )
-    })}
-  </div>
-  )
-}  else {
-  return (
-    <div className={classes['colors']}>
-  
-  {sortedColors && sortedColors?.map((item: Colors) => {
-        return (
-          <div key={item.id} className={classes['colors-container']}>
-            <ColorItem id={item.id} hexColor={item.hexColor} rgbColor={item.rgbColor} hslColor={item.hslColor} addedByUser={item.addedByUser} onRemoveColor={removeColorFromArray}/>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
-}
-
-export default ColorsContainer
+export default ColorsContainer;
