@@ -15,25 +15,72 @@ const ColorsFilter = ({ filteredColors, setFilteredColors, colorsArray }: Colors
     const redCheckbox = document.getElementById("red") as HTMLInputElement | null
     const greenCheckbox = document.getElementById("green") as HTMLInputElement | null
     const blueCheckbox = document.getElementById("blue") as HTMLInputElement | null
+    const saturationCheckbox = document.getElementById("saturation") as HTMLInputElement | null
 
-    if (redCheckbox?.checked && greenCheckbox?.checked && blueCheckbox?.checked) {
-      setFilteredColors(JSON.parse(localStorage.getItem('enteredColors')!).filter((colors: any) => colors.rgbColor.r > 127 && colors.rgbColor.g > 127 && colors.rgbColor.b > 127))
+    // all checkboxes
+    if (redCheckbox?.checked && greenCheckbox?.checked && blueCheckbox?.checked && saturationCheckbox?.checked) {
+      setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.r > 127 && colors.rgbColor.g > 127 && colors.rgbColor.b > 127 && colors.hslColor.s > 50))
+
+      // 1, 2, 3 checkboxes
+    } else if (redCheckbox?.checked && greenCheckbox?.checked && blueCheckbox?.checked) {
+      setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.r > 127 && colors.rgbColor.g > 127 && colors.rgbColor.b > 127))
+
+      // 1, 2, 4 checkboxes
+    } else if ( redCheckbox?.checked && greenCheckbox?.checked && saturationCheckbox?.checked) {
+      setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.r > 127 && colors.rgbColor.g > 127 && colors.hslColor.s > 50))
+
+      // 1, 3, 4 checkboxes
+    } else if ( redCheckbox?.checked && blueCheckbox?.checked && saturationCheckbox?.checked) {
+      setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.r > 127 && colors.rgbColor.b > 127 && colors.hslColor.s > 50))
+
+      // 2, 3, 4 checkboxes
+    } else if (greenCheckbox?.checked && blueCheckbox?.checked && saturationCheckbox?.checked) {
+      setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.g > 127 && colors.rgbColor.b > 127 && colors.hslColor.s > 50))
+
+      // 1, 2 checkboxes
     } else if (redCheckbox?.checked && greenCheckbox?.checked) {
-      setFilteredColors(JSON.parse(localStorage.getItem('enteredColors')!).filter((colors: any) => colors.rgbColor.r > 127 && colors.rgbColor.g > 127))
-    } else if ( redCheckbox?.checked && blueCheckbox?.checked) {
-      setFilteredColors(JSON.parse(localStorage.getItem('enteredColors')!).filter((colors: any) => colors.rgbColor.r > 127 && colors.rgbColor.b > 127))
+      setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.r > 127 && colors.rgbColor.g > 127))
+
+      // 1, 3 checkboxes
+    } else if (redCheckbox?.checked && blueCheckbox?.checked) {
+      setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.r > 127 && colors.rgbColor.b > 127))
+
+      // 1, 4 checkboxes
+    } else if (redCheckbox?.checked && saturationCheckbox?.checked) {
+      setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.r > 127 && colors.hslColor.s > 50))
+
+      // 2, 3 checkboxes
     } else if (greenCheckbox?.checked && blueCheckbox?.checked) {
-      setFilteredColors(JSON.parse(localStorage.getItem('enteredColors')!).filter((colors: any) => colors.rgbColor.g > 127 && colors.rgbColor.b > 127))
+      setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.g > 127 && colors.rgbColor.b > 127))
+
+      // 2, 4 checkboxes
+    } else if (greenCheckbox?.checked && saturationCheckbox?.checked) {
+      setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.g > 127 && colors.hslColor.s > 50))
+
+      // 3, 4 checkboxes
+    } else if (blueCheckbox?.checked && saturationCheckbox?.checked) {
+      setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.b > 127 && colors.hslColor.s > 50))
+
+      // 1 checkbox
     } else if (redCheckbox?.checked) {
       setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.r > 127))
+
+      // 2 checkbox
     } else if (greenCheckbox?.checked) {
-      setFilteredColors(JSON.parse(localStorage.getItem('enteredColors')!).filter((colors: any) => colors.rgbColor.g > 127))
+      setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.g > 127))
+
+      // 3 checkbox
     } else if (blueCheckbox?.checked) {
-      setFilteredColors(JSON.parse(localStorage.getItem('enteredColors')!).filter((colors: any) => colors.rgbColor.b > 127))
+      setFilteredColors(colorsArray.filter((colors: any) => colors.rgbColor.b > 127))
+
+      // 4 checkbox
+    } else if (saturationCheckbox?.checked) {
+      setFilteredColors(colorsArray.filter((colors: any) => colors.hslColor.s > 50))
+
+      // checked: false
     } else {
       setFilteredColors([])
     }
-
   }
 
 

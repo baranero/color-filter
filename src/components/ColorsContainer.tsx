@@ -34,7 +34,7 @@ if (filteredColors.length > 0 || redCheckbox?.checked) {
 {filteredColors && filteredColors?.map((item: Colors) => {
       return (
         <div key={item.id} className={classes['colors-container']}>
-          <ColorItem id={item.id} hexColor={item.hexColor} rgbColor={item.rgbColor} addedByUser={item.addedByUser} onRemoveColor={removeColorFromArray}/>
+          <ColorItem id={item.id} hexColor={item.hexColor} rgbColor={item.rgbColor} hslColor={item.hslColor} addedByUser={item.addedByUser} onRemoveColor={removeColorFromArray}/>
         </div>
       )
     })}
@@ -47,7 +47,7 @@ if (filteredColors.length > 0 || redCheckbox?.checked) {
   {sortedColors && sortedColors?.map((item: Colors) => {
         return (
           <div key={item.id} className={classes['colors-container']}>
-            <ColorItem id={item.id} hexColor={item.hexColor} rgbColor={item.rgbColor} addedByUser={item.addedByUser} onRemoveColor={removeColorFromArray}/>
+            <ColorItem id={item.id} hexColor={item.hexColor} rgbColor={item.rgbColor} hslColor={item.hslColor} addedByUser={item.addedByUser} onRemoveColor={removeColorFromArray}/>
           </div>
         )
       })}

@@ -8,6 +8,7 @@ export interface Colors {
   id: string,
   hexColor: string,
   rgbColor: {r: number, g: number, b: number},
+  hslColor: {h: number, s: number, l: number},
   addedByUser: boolean
 }
 

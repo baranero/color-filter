@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import classes from './NewColor.module.scss'
 import { Colors } from '../App'
+import { hexToRgb } from '../function/hexToRGB'
+import { hexToHSL } from '../function/hexToHSL'
 
 interface NewColorProps {
   onAddColor: (enteredColor: Colors) => void
@@ -12,21 +14,13 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
     id: '',
     hexColor: '',
     rgbColor: {r: null!, g: null!, b: null!},
+    hslColor: {h: null!, s: null!, l: null!},
     addedByUser: true
   }
 
   const [enteredColor, setEnteredColor] = useState<Colors>(defaultValues)
 
   let inputValueisIncorrect: boolean = enteredColor.hexColor.includes('#', 1)
-
-  const hexToRgb = (hex: string) => {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : null;
-  }
   
 
   const colorChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -35,6 +29,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
         id: '',
         hexColor: enteredColor.hexColor.slice(0, -1),
         rgbColor: {r: null!, g: null!, b: null!},
+        hslColor: {h: null!, s: null!, l: null!},
         addedByUser: true
       })
     } else {
@@ -42,6 +37,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
         id: Math.random().toString(16).slice(2),
         hexColor: event.target.value.toUpperCase(),
         rgbColor: hexToRgb(event.target.value)!,
+        hslColor: hexToHSL(event.target.value),
         addedByUser: true
       })
     }
@@ -49,10 +45,11 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
 
   const submitHandler = (event: React.FormEvent): void => {
 
-    
+    console.log(hexToHSL(enteredColor.hexColor));   
     event.preventDefault()
     onAddColor(enteredColor)
     setEnteredColor(defaultValues)
+
   }
 
   return (
