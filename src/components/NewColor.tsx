@@ -62,6 +62,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
         value={enteredColor.hexColor}
         onChange={colorChangeHandler}
         placeholder='Input color in HEX format (eg. #3F3F3F)'
+        pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$"
         maxLength={7}
       />
       {!inputValueisIncorrect ? '' : <p className={classes['color-form-warning']} >You can use # sign only as first</p>}

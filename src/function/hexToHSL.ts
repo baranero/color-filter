@@ -9,42 +9,39 @@ export const hexToHSL = (hex: string) => {
   g = hexToRgb(hex)?.g!
   b = hexToRgb(hex)?.b!
 
+  r /= 255; g /= 255; b /= 255;
 
-  
-  // Then to HSL
-  r /= 255;
-  g /= 255;
-  b /= 255;
-  let cmin = Math.min(r,g,b),
-      cmax = Math.max(r,g,b),
-      delta = cmax - cmin,
-      h = 0,
-      s = 0,
-      l = 0;
-
-  if (delta === 0)
-    h = 0;
-  else if (cmax === r)
-    h = ((g - b) / delta) % 6;
-  else if (cmax === g)
-    h = (b - r) / delta + 2;
-  else
-    h = (r - g) / delta + 4;
-
-  h = Math.round(h * 60);
-
-  if (h < 0)
-    h += 360;
-
-  l = (cmax + cmin) / 2;
-  s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
-  s = +(s * 100).toFixed(1);
-  l = +(l * 100).toFixed(1);
-
-  return {
-    h: h,
-    s: s,
-    l : l
+  var max = Math.max(r, g, b),
+  min = Math.min(r, g, b);
+var h: number, s: number, l: number = (max + min) / 2;
+if (max === min) {
+  h = s = 0;
+} else {
+  var d = max - min;
+  s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  switch (max) {
+  case r:
+      h = (g - b) / d + (g < b ? 6 : 0);
+      break;
+  case g:
+      h = (b - r) / d + 2;
+      break;
+  case b:
+      h = (r - g) / d + 4;
+      break;
   }
+  h! /= 6;
+}
+s = s * 100;
+s = Math.round(s);
+l = l * 100;
+l = Math.round(l);
+h = Math.round(h! * 360);
+
+return {
+  h: h,
+  s: s,
+  l: l
+};
 
 }
