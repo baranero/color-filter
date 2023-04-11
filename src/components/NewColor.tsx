@@ -19,6 +19,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
   };
 
   const [enteredColor, setEnteredColor] = useState<Colors>(defaultValues);
+  const [error, setError] = useState<boolean>(false)
 
   const invalidCharacters = /[^a-fA-F0-9#]/g;
   const validCharacters = /[a-fA-F0-9]/g;
@@ -37,6 +38,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
 
     // use values from autocomplete
     if (event.target.value.length >= 7) {
+      setError(false)
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
         hexColor: event.target.value.toUpperCase(),
@@ -48,6 +50,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
 
     //  remove invalid character
     else if (event.target.value.match(invalidCharacters)) {
+      setError(true)
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
         hexColor: event.target.value.replace(invalidCharacters, ""),
@@ -61,6 +64,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
       event.target.value.match(validCharacters) &&
       enteredColor.hexColor.length < 1
     ) {
+      setError(true)
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
         hexColor: event.target.value.replace(validCharacters, "").toUpperCase(),
@@ -71,6 +75,13 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
 
       // set value and remove "#" in the middle of value
     } else if (correctFirstCharacter && enteredColor.hexColor.length) {
+
+      if (event.target.value.slice(-1) === "#") {
+        setError(true)
+      } else {
+        setError(false)
+      }
+      
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
         hexColor: event.target.value.replace(/([^])(#)/g, "$1").toUpperCase(),
@@ -81,6 +92,13 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
 
       // don't let to type valid character on first place
     } else {
+      
+      if (event.target.value === "#") {
+        setError(false)
+      } else {
+        setError(true)
+      }
+      
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
         hexColor: event.target.value.replace(/([^#])(#)/g, "$1").toUpperCase(),
@@ -112,7 +130,7 @@ console.log(enteredColor);
       <input
         className={
           classes[
-            invalidCharacters
+            !error
               ? "color-form-input"
               : "color-form-input-wrong"
           ]
@@ -124,7 +142,7 @@ console.log(enteredColor);
         placeholder="Input color in HEX format (eg. #3F3F3F)"
         maxLength={7}
       />
-      {invalidCharacters ? (
+      {!error ? (
         ""
       ) : (
         <p className={classes["color-form-warning"]}>
