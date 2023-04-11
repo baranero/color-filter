@@ -1,193 +1,61 @@
-import { SetStateAction } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { Colors } from "../../App";
 import classes from "./ColorsFilter.module.scss";
+import { defaultColors } from "../../data/defaultColors";
+import { colorsToSort } from "../../function/colorsToSort";
 
 interface ColorsFilterProps {
-  filteredColors: Colors[];
   setFilteredColors: React.Dispatch<SetStateAction<Colors[]>>;
   colorsArray: Colors[];
 }
 
 const ColorsFilter = ({
-  filteredColors,
   setFilteredColors,
   colorsArray,
 }: ColorsFilterProps) => {
-  const colorFilter = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const redCheckbox = document.getElementById(
-      "red"
-    ) as HTMLInputElement | null;
-    const greenCheckbox = document.getElementById(
-      "green"
-    ) as HTMLInputElement | null;
-    const blueCheckbox = document.getElementById(
-      "blue"
-    ) as HTMLInputElement | null;
-    const saturationCheckbox = document.getElementById(
-      "saturation"
-    ) as HTMLInputElement | null;
+  const [redColorFilter, setRedColorFilter] = useState<boolean>(false);
+  const [greenColorFilter, setGreenColorFilter] = useState<boolean>(false);
+  const [blueColorFilter, setBlueColorFilter] = useState<boolean>(false);
+  const [saturationFilter, setSaturationFilter] = useState<boolean>(false);
 
-    // all checkboxes
-    if (
-      redCheckbox?.checked &&
-      greenCheckbox?.checked &&
-      blueCheckbox?.checked &&
-      saturationCheckbox?.checked
-    ) {
-      setFilteredColors(
-        colorsArray.filter(
-          (colors: any) =>
-            colors.rgbColor.r > 127 &&
-            colors.rgbColor.g > 127 &&
-            colors.rgbColor.b > 127 &&
-            colors.hslColor.s > 50
-        )
-      );
+  useEffect(() => {
+    setFilteredColors(
+      [...colorsArray].sort(colorsToSort).filter((item: Colors) => {
+        if (redColorFilter && item.rgbColor.r <= 127) {
+          return false;
+        }
 
-      // 2, 3, 4 checkboxes
-    } else if (
-      greenCheckbox?.checked &&
-      blueCheckbox?.checked &&
-      saturationCheckbox?.checked
-    ) {
-      setFilteredColors(
-        colorsArray.filter(
-          (colors: any) =>
-            colors.rgbColor.g > 127 &&
-            colors.rgbColor.b > 127 &&
-            colors.hslColor.s > 50
-        )
-      );
+        if (greenColorFilter && item.rgbColor.g <= 127) {
+          return false;
+        }
 
-      // 1, 2, 3 checkboxes
-    } else if (
-      redCheckbox?.checked &&
-      greenCheckbox?.checked &&
-      blueCheckbox?.checked
-    ) {
-      setFilteredColors(
-        colorsArray.filter(
-          (colors: any) =>
-            colors.rgbColor.r > 127 &&
-            colors.rgbColor.g > 127 &&
-            colors.rgbColor.b > 127
-        )
-      );
+        if (blueColorFilter && item.rgbColor.b <= 127) {
+          return false;
+        }
 
-      // 1, 2, 4 checkboxes
-    } else if (
-      redCheckbox?.checked &&
-      greenCheckbox?.checked &&
-      saturationCheckbox?.checked
-    ) {
-      setFilteredColors(
-        colorsArray.filter(
-          (colors: any) =>
-            colors.rgbColor.r > 127 &&
-            colors.rgbColor.g > 127 &&
-            colors.hslColor.s > 50
-        )
-      );
+        if (saturationFilter && item.hslColor.s <= 50) {
+          return false;
+        }
 
-      // 1, 3, 4 checkboxes
-    } else if (
-      redCheckbox?.checked &&
-      blueCheckbox?.checked &&
-      saturationCheckbox?.checked
-    ) {
-      setFilteredColors(
-        colorsArray.filter(
-          (colors: any) =>
-            colors.rgbColor.r > 127 &&
-            colors.rgbColor.b > 127 &&
-            colors.hslColor.s > 50
-        )
-      );
-
-      // 1, 2 checkboxes
-    } else if (redCheckbox?.checked && greenCheckbox?.checked) {
-      setFilteredColors(
-        colorsArray.filter(
-          (colors: any) => colors.rgbColor.r > 127 && colors.rgbColor.g > 127
-        )
-      );
-
-      // 1, 3 checkboxes
-    } else if (redCheckbox?.checked && blueCheckbox?.checked) {
-      setFilteredColors(
-        colorsArray.filter(
-          (colors: any) => colors.rgbColor.r > 127 && colors.rgbColor.b > 127
-        )
-      );
-
-      // 1, 4 checkboxes
-    } else if (redCheckbox?.checked && saturationCheckbox?.checked) {
-      setFilteredColors(
-        colorsArray.filter(
-          (colors: any) => colors.rgbColor.r > 127 && colors.hslColor.s > 50
-        )
-      );
-
-      // 2, 3 checkboxes
-    } else if (greenCheckbox?.checked && blueCheckbox?.checked) {
-      setFilteredColors(
-        colorsArray.filter(
-          (colors: any) => colors.rgbColor.g > 127 && colors.rgbColor.b > 127
-        )
-      );
-
-      // 2, 4 checkboxes
-    } else if (greenCheckbox?.checked && saturationCheckbox?.checked) {
-      setFilteredColors(
-        colorsArray.filter(
-          (colors: any) => colors.rgbColor.g > 127 && colors.hslColor.s > 50
-        )
-      );
-
-      // 3, 4 checkboxes
-    } else if (blueCheckbox?.checked && saturationCheckbox?.checked) {
-      setFilteredColors(
-        colorsArray.filter(
-          (colors: any) => colors.rgbColor.b > 127 && colors.hslColor.s > 50
-        )
-      );
-
-      // 1 checkbox
-    } else if (redCheckbox?.checked) {
-      setFilteredColors(
-        colorsArray.filter((colors: any) => colors.rgbColor.r > 127)
-      );
-
-      // 2 checkbox
-    } else if (greenCheckbox?.checked) {
-      setFilteredColors(
-        colorsArray.filter((colors: any) => colors.rgbColor.g > 127)
-      );
-
-      // 3 checkbox
-    } else if (blueCheckbox?.checked) {
-      setFilteredColors(
-        colorsArray.filter((colors: any) => colors.rgbColor.b > 127)
-      );
-
-      // 4 checkbox
-    } else if (saturationCheckbox?.checked) {
-      setFilteredColors(
-        colorsArray.filter((colors: any) => colors.hslColor.s > 50)
-      );
-
-      // checked: false
-    } else {
-      setFilteredColors([]);
-    }
-  };
+        return true;
+      })
+    );
+  }, [
+    setFilteredColors,
+    colorsArray?.length,
+    redColorFilter,
+    greenColorFilter,
+    blueColorFilter,
+    saturationFilter,
+  ]);
 
   return (
     <div className={classes["colors-filter-container"]}>
       <div className={classes["colors-filter-item"]}>
         <input
           type="checkbox"
-          onChange={colorFilter}
+          onChange={() => setRedColorFilter(!redColorFilter)}
+          checked={redColorFilter}
           value="red"
           name="red"
           id="red"
@@ -197,7 +65,8 @@ const ColorsFilter = ({
       <div className={classes["colors-filter-item"]}>
         <input
           type="checkbox"
-          onChange={colorFilter}
+          onChange={() => setGreenColorFilter(!greenColorFilter)}
+          checked={greenColorFilter}
           value="green"
           name="green"
           id="green"
@@ -207,7 +76,8 @@ const ColorsFilter = ({
       <div className={classes["colors-filter-item"]}>
         <input
           type="checkbox"
-          onChange={colorFilter}
+          onChange={() => setBlueColorFilter(!blueColorFilter)}
+          checked={blueColorFilter}
           value="blue"
           name="blue"
           id="blue"
@@ -217,7 +87,8 @@ const ColorsFilter = ({
       <div className={classes["colors-filter-item"]}>
         <input
           type="checkbox"
-          onChange={colorFilter}
+          onChange={() => setSaturationFilter(!saturationFilter)}
+          checked={saturationFilter}
           value="saturation"
           name="saturation"
           id="saturation"

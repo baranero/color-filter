@@ -19,12 +19,10 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
   };
 
   const [enteredColor, setEnteredColor] = useState<Colors>(defaultValues);
-  const [error, setError] = useState<boolean>(false)
+  const [error, setError] = useState<boolean>(false);
 
   const invalidCharacters = /[^a-fA-F0-9#]/g;
   const validCharacters = /[a-fA-F0-9]/g;
-  
-  
 
   // check if "#" sign is on 1 index or further
   const correctFirstCharacter: boolean =
@@ -35,14 +33,14 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
   const colorChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
-
     // use values from autocomplete
     if (event.target.value.length === 7) {
-      console.log(1);
-      setError(false)
+      setError(false);
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
-        hexColor: event.target.value.replace(invalidCharacters, "").toUpperCase(),
+        hexColor: event.target.value
+          .replace(invalidCharacters, "")
+          .toUpperCase(),
         rgbColor: hexToRgb(event.target.value)!,
         hslColor: hexToHSL(event.target.value),
         addedByUser: true,
@@ -51,8 +49,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
 
     //  remove invalid character
     else if (event.target.value.match(invalidCharacters)) {
-      console.log(2);
-      setError(true)
+      setError(true);
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
         hexColor: event.target.value.replace(invalidCharacters, ""),
@@ -62,12 +59,11 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
       });
 
       // remove "#" except the first one
-    }  else if (
+    } else if (
       event.target.value.match(validCharacters) &&
       enteredColor.hexColor.length < 1
     ) {
-      console.log(3);
-      setError(true)
+      setError(true);
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
         hexColor: event.target.value.replace(validCharacters, "").toUpperCase(),
@@ -78,14 +74,12 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
 
       // set value and remove "#" in the middle of value
     } else if (correctFirstCharacter && enteredColor.hexColor.length) {
-      console.log(4);
       if (event.target.value.slice(-1) === "#") {
-        setError(true)
+        setError(true);
       } else {
-        console.log(5);
-        setError(false)
+        setError(false);
       }
-      
+
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
         hexColor: event.target.value.replace(/([^])(#)/g, "$1").toUpperCase(),
@@ -96,13 +90,12 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
 
       // don't let to type valid character on first place
     } else {
-      
       if (event.target.value === "#") {
-        setError(false)
+        setError(false);
       } else {
-        setError(true)
+        setError(true);
       }
-      
+
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
         hexColor: event.target.value.replace(/([^#])(#)/g, "$1").toUpperCase(),
@@ -115,11 +108,14 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
 
   const submitHandler = (event: React.FormEvent): void => {
     if (enteredColor.hexColor.length < 7) {
-      return
+      return;
     }
-    if (colorsArray.filter((item) => item.hexColor === enteredColor.hexColor).length) {
-      return
-    } 
+    if (
+      colorsArray.filter((item) => item.hexColor === enteredColor.hexColor)
+        .length
+    ) {
+      return;
+    }
     event.preventDefault();
     onAddColor(enteredColor);
     setEnteredColor(defaultValues);
@@ -132,11 +128,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
       </label>
       <input
         className={
-          classes[
-            !error
-              ? "color-form-input"
-              : "color-form-input-wrong"
-          ]
+          classes[!error ? "color-form-input" : "color-form-input-wrong"]
         }
         id="color"
         type="text"
@@ -148,9 +140,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
       {!error ? (
         ""
       ) : (
-        <p className={classes["color-form-warning"]}>
-          Invalid value!
-        </p>
+        <p className={classes["color-form-warning"]}>Invalid value!</p>
       )}
       <button className={classes["color-form-button"]} type="submit">
         Submit

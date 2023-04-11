@@ -3,7 +3,6 @@ import classes from "./ColorItem.module.scss";
 import { Colors } from "../../App";
 import { ColorItemProps } from "../ColorsContainer/ColorsContainer";
 
-
 // class component
 class ColorItem extends Component<
   ColorItemProps,
@@ -43,9 +42,7 @@ class ColorItem extends Component<
             </button>
           )}
         </div>
-        <p className={classes["color-name"]}>
-          {this.props.hexColor}
-        </p>
+        <p className={classes["color-name"]}>{this.props.hexColor}</p>
       </>
     );
   }
