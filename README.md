@@ -21,11 +21,15 @@ You will also see any lint errors in the console.
 
 ![Clone-download](https://user-images.githubusercontent.com/94863094/231300458-bd6f2556-6888-45ed-bcf9-cc92dd096b3f.png)
 
-#### Set path on your computer
+#### Set path on your computer e.g.
+
+### `cd Documents`
 
 ### `git clone https://github.com/baranero/frontend-task.git`
 
 Clone repository from GitHub.
+
+### `cd frontend-task`
 
 ### `npm install`
 
