@@ -115,6 +115,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
 
     // check if length is correct
     if (enteredColor.hexColor.length < 7) {
+      alert("Too short! Type 7 characters.")
       setError(true)
       return;
     }
@@ -124,6 +125,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
       colorsArray.filter((item) => item.hexColor === enteredColor.hexColor)
         .length
     ) {
+      alert("Color already exists!")
       return;
     }
     event.preventDefault();
