@@ -1,5 +1,5 @@
 import { Component } from "react";
-import classes from "./ColorsContainer.module.scss";
+import classes from "./ColorItem.module.scss";
 import { Colors } from "../App";
 import { ColorItemProps } from "./ColorsContainer";
 
@@ -32,18 +32,18 @@ class ColorItem extends Component<
   render() {
     return (
       <>
-        <div className={classes["colors-container-item"]}>
+        <div className={classes["color-item"]}>
           {this.props.addedByUser && (
             <button
               value={this.props.id}
               onClick={(event) => this.removeColor(this.props.id)}
-              className={classes["colors-container-item-button"]}
+              className={classes["color-item-button"]}
             >
               X
             </button>
           )}
         </div>
-        <p className={classes["colors-container-name"]}>
+        <p className={classes["color-name"]}>
           {this.props.hexColor}
         </p>
       </>
