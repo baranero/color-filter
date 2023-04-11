@@ -154,7 +154,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
         <p className={classes["color-form-warning"]}>Invalid value!</p>
       )}
       <button className={classes["color-form-button"]} type="submit">
-        Submit
+        Add Color
       </button>
     </form>
   );
