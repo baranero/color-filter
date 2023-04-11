@@ -1,4 +1,6 @@
-import { SetStateAction } from "react";
+import React, {
+  SetStateAction,
+} from "react";
 import { Colors } from "../../App";
 import classes from "./ColorsFilter.module.scss";
 
@@ -191,6 +193,7 @@ const ColorsFilter = ({
           value="red"
           name="red"
           id="red"
+          className={classes["colors-filter-input"]}
         />
         <label htmlFor="red">Red &gt; 50%</label>
       </div>
@@ -201,6 +204,7 @@ const ColorsFilter = ({
           value="green"
           name="green"
           id="green"
+          className={classes["colors-filter-input"]}
         />
         <label htmlFor="green">Green &gt; 50%</label>
       </div>
@@ -211,6 +215,7 @@ const ColorsFilter = ({
           value="blue"
           name="blue"
           id="blue"
+          className={classes["colors-filter-input"]}
         />
         <label htmlFor="blue">Blue &gt; 50%</label>
       </div>
@@ -221,6 +226,7 @@ const ColorsFilter = ({
           value="saturation"
           name="saturation"
           id="saturation"
+          className={classes["colors-filter-input"]}
         />
         <label htmlFor="saturation">Saturation &gt; 50%</label>
       </div>

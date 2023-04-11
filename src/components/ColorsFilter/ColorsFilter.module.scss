@@ -10,4 +10,8 @@
     text-align: left;
     padding: 5px 0;
   }
+
+  &-input:hover {
+    box-shadow: 0 0 6px #AAAABB;
+  }
 }
