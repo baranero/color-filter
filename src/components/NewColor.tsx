@@ -36,7 +36,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
   ): void => {
 
     // use values from autocomplete
-    if (event.target.value.length === 8) {
+    if (event.target.value.length >= 7) {
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
         hexColor: event.target.value.toUpperCase(),
