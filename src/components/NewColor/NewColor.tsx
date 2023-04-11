@@ -19,9 +19,14 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
   };
 
   const [enteredColor, setEnteredColor] = useState<Colors>(defaultValues);
+
+  // set state if inputed character is invalid
   const [error, setError] = useState<boolean>(false);
 
+  // regular expressions with invalid characters
   const invalidCharacters = /[^a-fA-F0-9#]/g;
+
+  // regular expressions with valid characters
   const validCharacters = /[a-fA-F0-9]/g;
 
   // check if "#" sign is on 1 index or further
@@ -107,9 +112,13 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
   };
 
   const submitHandler = (event: React.FormEvent): void => {
+
+    // check if length is correct
     if (enteredColor.hexColor.length < 7) {
       return;
     }
+
+    // check if color is unique
     if (
       colorsArray.filter((item) => item.hexColor === enteredColor.hexColor)
         .length

@@ -49,7 +49,7 @@ const ColorsContainer = ({
     }
   }, [filteredColors, sortedColors?.length, colorsFromLocalStorage]);
 
-  //pas remove function through components
+  //pass remove function through components
   const removeColorFromArray = (color: string) => {
     onRemoveColor(color);
   };
