@@ -1,4 +1,4 @@
-import React, { SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
 import classes from "./ColorsContainer.module.scss";
 import { Colors } from "../../App";
 import ColorItem from "../ColorItem/ColorItem";
@@ -13,11 +13,11 @@ interface ColorsContainerProps {
   onRemoveColor: (id: string) => void;
 }
 
-const ColorsContainer = ({
+const ColorsContainer: React.FC<ColorsContainerProps> = ({
   sortedColors,
   onRemoveColor,
   filteredColors,
-}: ColorsContainerProps) => {
+}) => {
   let colorsFromLocalStorage = JSON.parse(
     localStorage.getItem("enteredColors")!
   );

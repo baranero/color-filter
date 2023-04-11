@@ -1,7 +1,6 @@
-import { SetStateAction, useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { Colors } from "../../App";
 import classes from "./ColorsFilter.module.scss";
-import { defaultColors } from "../../data/defaultColors";
 import { colorsToSort } from "../../function/colorsToSort";
 
 interface ColorsFilterProps {
@@ -9,10 +8,10 @@ interface ColorsFilterProps {
   colorsArray: Colors[];
 }
 
-const ColorsFilter = ({
+const ColorsFilter: React.FC<ColorsFilterProps> = ({
   setFilteredColors,
   colorsArray,
-}: ColorsFilterProps) => {
+}) => {
 
   // inputs check states
   const [redColorFilter, setRedColorFilter] = useState<boolean>(false);
