@@ -18,7 +18,6 @@ const ColorsContainer = ({
   onRemoveColor,
   filteredColors,
 }: ColorsContainerProps) => {
-
   let colorsFromLocalStorage = JSON.parse(
     localStorage.getItem("enteredColors")!
   );
@@ -55,7 +54,7 @@ const ColorsContainer = ({
     onRemoveColor(color);
   };
 
-    // check if inputs are checked
+  // check if inputs are checked
   const redCheckbox = document.getElementById("red") as HTMLInputElement | null;
   const greenCheckbox = document.getElementById(
     "green"
@@ -67,8 +66,8 @@ const ColorsContainer = ({
     "saturation"
   ) as HTMLInputElement | null;
 
-    // if checkbox is checked display filtered colors
-    
+  // if checkbox is checked display filtered colors
+
   if (
     filteredColors.length > 0 ||
     redCheckbox?.checked ||

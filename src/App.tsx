@@ -3,6 +3,7 @@ import NewColor from "./components/NewColor/NewColor";
 import ColorsContainer from "./components/ColorsContainer/ColorsContainer";
 import { defaultColors } from "./data/defaultColors";
 import ColorsFilter from "./components/ColorsFilter/ColorsFilter";
+import { colorsToSort } from "./function/colorsToSort";
 
 export interface Colors {
   id: string;
@@ -17,18 +18,6 @@ const App: React.FC = () => {
   const [filteredColors, setFilterdColors] = useState<Colors[]>([]);
   const [sortedColors, setSortedColors] = useState<Colors[]>([]);
 
-  // check if inputs are checked
-  const redCheckbox = document.getElementById("red") as HTMLInputElement | null; 
-  const greenCheckbox = document.getElementById(
-    "green"
-  ) as HTMLInputElement | null;
-  const blueCheckbox = document.getElementById(
-    "blue"
-  ) as HTMLInputElement | null;
-  const saturationCheckbox = document.getElementById(
-    "saturation"
-  ) as HTMLInputElement | null;
-
   let colorsFromLocalStorage = JSON.parse(
     localStorage.getItem("enteredColors")!
   );
@@ -41,59 +30,18 @@ const App: React.FC = () => {
     } else {
       setColorsArray(colorsFromLocalStorage); // if not empty set colors from local storage
     }
-
-        filteredColors?.sort( 
-      (firstColor: Colors, secondColor: Colors) => {
-        if (firstColor.rgbColor.r !== secondColor.rgbColor.r) {
-          return secondColor.rgbColor.r - firstColor.rgbColor.r;
-        }
-        if (firstColor.rgbColor.g !== secondColor.rgbColor.g) {
-          return secondColor.rgbColor.g - firstColor.rgbColor.g;
-        }
-        if (firstColor.rgbColor.b !== secondColor.rgbColor.b) {
-          return secondColor.rgbColor.b - firstColor.rgbColor.b;
-        }
-        return 0;
-      }
-    );
-
-    // sort colors from colorsArray
-      const colorsToSort = colorsArray?.sort( 
-      (firstColor: Colors, secondColor: Colors) => {
-        if (firstColor.rgbColor.r !== secondColor.rgbColor.r) {
-          return secondColor.rgbColor.r - firstColor.rgbColor.r;
-        }
-        if (firstColor.rgbColor.g !== secondColor.rgbColor.g) {
-          return secondColor.rgbColor.g - firstColor.rgbColor.g;
-        }
-        if (firstColor.rgbColor.b !== secondColor.rgbColor.b) {
-          return secondColor.rgbColor.b - firstColor.rgbColor.b;
-        }
-        return 0;
-      }
-    );
     if (colorsArray?.length > 0) {
-      setSortedColors(colorsToSort)
-      localStorage.setItem("enteredColors", JSON.stringify(colorsArray))
+      setSortedColors(colorsArray?.sort(colorsToSort));
+      localStorage.setItem("enteredColors", JSON.stringify(colorsArray));
     }
-    
-  }, [colorsFromLocalStorage?.length, colorsArray.length, filteredColors.length]);
+  }, [
+    colorsFromLocalStorage?.length,
+    colorsArray.length,
+    filteredColors.length,
+  ]);
 
   // remove color added by user
   const removeColor = (id: string) => {
-
-    // remove color while checkbox is checked
-    let filteredColorToRemove = filteredColors.filter((item) => item.id !== id);
-    if (
-      filteredColors.length > 0 ||
-      redCheckbox?.checked ||
-      greenCheckbox?.checked ||
-      blueCheckbox?.checked ||
-      saturationCheckbox?.checked
-    ) {
-      setFilterdColors(filteredColorToRemove);
-    }
-
     // remove color from array
     let colorToRemove = colorsArray.filter((item) => item.id !== id);
     setColorsArray(colorToRemove);
@@ -101,19 +49,6 @@ const App: React.FC = () => {
   };
 
   const addColorToArray = (color: Colors) => {
-
-    // add color while checkbox is checked
-    if (
-      filteredColors.length > 0 ||
-      redCheckbox?.checked ||
-      greenCheckbox?.checked ||
-      blueCheckbox?.checked ||
-      saturationCheckbox?.checked
-    ) {
-      setFilterdColors([...filteredColors, color]);
-    }
-
-
     // add color to array
     setColorsArray([...colorsArray, color]);
     localStorage.setItem(
@@ -128,7 +63,6 @@ const App: React.FC = () => {
       <NewColor onAddColor={addColorToArray} colorsArray={colorsArray} />
       <ColorsFilter
         colorsArray={colorsArray}
-        filteredColors={filteredColors}
         setFilteredColors={setFilterdColors}
       />
       <ColorsContainer
