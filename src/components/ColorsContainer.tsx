@@ -9,7 +9,6 @@ export type ColorItemProps = Colors & {
 
 interface ColorsContainerProps {
   sortedColors: Colors[];
-  setSortedColors: React.Dispatch<SetStateAction<Colors[]>>;
   filteredColors: Colors[];
   onRemoveColor: (id: string) => void;
 }
@@ -19,6 +18,37 @@ const ColorsContainer = ({
   onRemoveColor,
   filteredColors,
 }: ColorsContainerProps) => {
+
+  let colorsFromLocalStorage = JSON.parse(
+    localStorage.getItem("enteredColors")!
+  );
+  // set background colors
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      // number of colors items based on colors in local storage
+      `--number-of-child`,
+      colorsFromLocalStorage?.length + 3
+    );
+    if (colorsFromLocalStorage !== null) {
+      if (filteredColors.length > 0) {
+        for (let i = 0; i < filteredColors?.length; i++) {
+          // set colors if any filter is checked
+          document.documentElement.style.setProperty(
+            `--color-user-${i + 1}`,
+            filteredColors[i].hexColor
+          );
+        }
+      } else {
+        for (let i = 0; i < sortedColors?.length; i++) {
+          // set colors for whole array
+          document.documentElement.style.setProperty(
+            `--color-user-${i + 1}`,
+            sortedColors[i].hexColor
+          );
+        }
+      }
+    }
+  }, [filteredColors, sortedColors?.length, colorsFromLocalStorage]);
 
   //pas remove function through components
   const removeColorFromArray = (color: string) => {
@@ -38,6 +68,7 @@ const ColorsContainer = ({
   ) as HTMLInputElement | null;
 
     // if checkbox is checked display filtered colors
+    
   if (
     filteredColors.length > 0 ||
     redCheckbox?.checked ||

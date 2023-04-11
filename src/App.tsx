@@ -33,34 +33,6 @@ const App: React.FC = () => {
     localStorage.getItem("enteredColors")!
   );
 
-  // set background colors
-  useEffect(() => {
-    document.documentElement.style.setProperty(
-      // number of colors items based on colors in local storage
-      `--number-of-child`,
-      colorsFromLocalStorage?.length + 3
-    );
-    if (colorsFromLocalStorage !== null) {
-      if (filteredColors.length > 0) {
-        for (let i = 0; i < filteredColors?.length; i++) {
-          // set colors if any filter is checked
-          document.documentElement.style.setProperty(
-            `--color-user-${i + 1}`,
-            filteredColors[i].hexColor
-          );
-        }
-      } else {
-        for (let i = 0; i < sortedColors?.length; i++) {
-          // set colors for whole array
-          document.documentElement.style.setProperty(
-            `--color-user-${i + 1}`,
-            sortedColors[i].hexColor
-          );
-        }
-      }
-    }
-  }, [filteredColors, sortedColors, colorsFromLocalStorage]);
-
   // set items in local storage
   useEffect(() => {
     if (!colorsFromLocalStorage) {
@@ -70,8 +42,7 @@ const App: React.FC = () => {
       setColorsArray(colorsFromLocalStorage); // if not empty set colors from local storage
     }
 
-    // sort colors from colorsArray
-    const colorsToSort = colorsArray?.sort( 
+        filteredColors?.sort( 
       (firstColor: Colors, secondColor: Colors) => {
         if (firstColor.rgbColor.r !== secondColor.rgbColor.r) {
           return secondColor.rgbColor.r - firstColor.rgbColor.r;
@@ -86,12 +57,27 @@ const App: React.FC = () => {
       }
     );
 
-    // if colorsArray exists set colorsToSort as sortedColors 
-    if (colorsArray.length > 0) {
-      setSortedColors(colorsToSort);
-      localStorage.setItem("enteredColors", JSON.stringify(colorsToSort)); // set sorted colors in local storage
+    // sort colors from colorsArray
+      const colorsToSort = colorsArray?.sort( 
+      (firstColor: Colors, secondColor: Colors) => {
+        if (firstColor.rgbColor.r !== secondColor.rgbColor.r) {
+          return secondColor.rgbColor.r - firstColor.rgbColor.r;
+        }
+        if (firstColor.rgbColor.g !== secondColor.rgbColor.g) {
+          return secondColor.rgbColor.g - firstColor.rgbColor.g;
+        }
+        if (firstColor.rgbColor.b !== secondColor.rgbColor.b) {
+          return secondColor.rgbColor.b - firstColor.rgbColor.b;
+        }
+        return 0;
+      }
+    );
+    if (colorsArray?.length > 0) {
+      setSortedColors(colorsToSort)
+      localStorage.setItem("enteredColors", JSON.stringify(colorsArray))
     }
-  }, [colorsFromLocalStorage?.length, sortedColors.length, colorsArray.length]);
+    
+  }, [colorsFromLocalStorage?.length, colorsArray.length, filteredColors.length]);
 
   // remove color added by user
   const removeColor = (id: string) => {
@@ -127,6 +113,7 @@ const App: React.FC = () => {
       setFilterdColors([...filteredColors, color]);
     }
 
+
     // add color to array
     setColorsArray([...colorsArray, color]);
     localStorage.setItem(
@@ -138,7 +125,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      <NewColor onAddColor={addColorToArray} />
+      <NewColor onAddColor={addColorToArray} colorsArray={colorsArray} />
       <ColorsFilter
         colorsArray={colorsArray}
         filteredColors={filteredColors}
@@ -147,7 +134,6 @@ const App: React.FC = () => {
       <ColorsContainer
         filteredColors={filteredColors}
         sortedColors={sortedColors}
-        setSortedColors={setSortedColors}
         onRemoveColor={removeColor}
       />
     </>

@@ -6,10 +6,10 @@ import { hexToHSL } from "../function/hexToHSL";
 
 interface NewColorProps {
   onAddColor: (enteredColor: Colors) => void;
+  colorsArray: Colors[];
 }
 
-const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
-
+const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
   const defaultValues = {
     id: "",
     hexColor: "",
@@ -20,24 +20,23 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
 
   const [enteredColor, setEnteredColor] = useState<Colors>(defaultValues);
 
+  const invalidCharacters = /[^a-fA-F0-9#]/g;
+  const validCharacters = /[a-fA-F0-9]/g;
+  console.log();
+  
+
   // check if "#" sign is on 1 index or further
-  let inputValueisIncorrect: boolean = enteredColor.hexColor.includes("#", 1);
+  const correctFirstCharacter: boolean =
+    enteredColor.hexColor.includes("#", 0) ||
+    enteredColor.hexColor.includes("", 0);
 
   // color input form
   const colorChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
 
-    // if input is incorrect slice last sign
-    if (inputValueisIncorrect) {
-      setEnteredColor({
-        id: "",
-        hexColor: enteredColor.hexColor.slice(0, -1),
-        rgbColor: { r: null!, g: null!, b: null! },
-        hslColor: { h: null!, s: null!, l: null! },
-        addedByUser: true,
-      });
-    } else {
+    // use values from autocomplete
+    if (event.target.value.length === 8) {
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
         hexColor: event.target.value.toUpperCase(),
@@ -46,10 +45,60 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
         addedByUser: true,
       });
     }
+
+    //  remove invalid character
+    else if (event.target.value.match(invalidCharacters)) {
+      setEnteredColor({
+        id: Math.random().toString(16).slice(2),
+        hexColor: event.target.value.replace(invalidCharacters, ""),
+        rgbColor: hexToRgb(event.target.value)!,
+        hslColor: hexToHSL(event.target.value),
+        addedByUser: true,
+      });
+
+      // remove "#" except the first one
+    }  else if (
+      event.target.value.match(validCharacters) &&
+      enteredColor.hexColor.length < 1
+    ) {
+      setEnteredColor({
+        id: Math.random().toString(16).slice(2),
+        hexColor: event.target.value.replace(validCharacters, "").toUpperCase(),
+        rgbColor: hexToRgb(event.target.value)!,
+        hslColor: hexToHSL(event.target.value),
+        addedByUser: true,
+      });
+
+      // set value and remove "#" in the middle of value
+    } else if (correctFirstCharacter && enteredColor.hexColor.length) {
+      setEnteredColor({
+        id: Math.random().toString(16).slice(2),
+        hexColor: event.target.value.replace(/([^])(#)/g, "$1").toUpperCase(),
+        rgbColor: hexToRgb(event.target.value)!,
+        hslColor: hexToHSL(event.target.value),
+        addedByUser: true,
+      });
+
+      // don't let to type valid character on first place
+    } else {
+      setEnteredColor({
+        id: Math.random().toString(16).slice(2),
+        hexColor: event.target.value.replace(/([^#])(#)/g, "$1").toUpperCase(),
+        rgbColor: hexToRgb(event.target.value)!,
+        hslColor: hexToHSL(event.target.value),
+        addedByUser: true,
+      });
+    }
   };
+console.log(enteredColor);
 
   const submitHandler = (event: React.FormEvent): void => {
-    console.log(hexToHSL(enteredColor.hexColor));
+    if (enteredColor.hexColor.length < 7) {
+      return
+    }
+    if (colorsArray.filter((item) => item.hexColor === enteredColor.hexColor).length) {
+      return
+    } 
     event.preventDefault();
     onAddColor(enteredColor);
     setEnteredColor(defaultValues);
@@ -63,9 +112,9 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
       <input
         className={
           classes[
-            inputValueisIncorrect
-              ? "color-form-input-wrong"
-              : "color-form-input"
+            invalidCharacters
+              ? "color-form-input"
+              : "color-form-input-wrong"
           ]
         }
         id="color"
@@ -73,10 +122,9 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor }) => {
         value={enteredColor.hexColor}
         onChange={colorChangeHandler}
         placeholder="Input color in HEX format (eg. #3F3F3F)"
-        pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$"
         maxLength={7}
       />
-      {!inputValueisIncorrect ? (
+      {invalidCharacters ? (
         ""
       ) : (
         <p className={classes["color-form-warning"]}>

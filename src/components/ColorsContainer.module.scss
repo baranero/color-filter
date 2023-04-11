@@ -32,6 +32,7 @@
       &-button {
         border: none;
         border-radius: 100%;
+        box-shadow: 0 0 10px #b0b0b0d6;
         width: 30px;
         height: 30px;
         background-color: #ffffff9b;
@@ -42,6 +43,7 @@
         width: 40px;
         height: 40px;
         transition: 0.2s;
+        font-size: 1rem;
       }
     }
     &-name {
