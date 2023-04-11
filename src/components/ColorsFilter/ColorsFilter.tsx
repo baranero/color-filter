@@ -1,5 +1,5 @@
-import { SetStateAction, useEffect } from "react";
-import { Colors } from "../App";
+import { SetStateAction } from "react";
+import { Colors } from "../../App";
 import classes from "./ColorsFilter.module.scss";
 
 interface ColorsFilterProps {

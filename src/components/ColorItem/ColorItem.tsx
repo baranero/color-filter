@@ -1,7 +1,7 @@
 import { Component } from "react";
 import classes from "./ColorItem.module.scss";
-import { Colors } from "../App";
-import { ColorItemProps } from "./ColorsContainer";
+import { Colors } from "../../App";
+import { ColorItemProps } from "../ColorsContainer/ColorsContainer";
 
 
 // class component

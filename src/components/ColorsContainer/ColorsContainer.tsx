@@ -1,7 +1,7 @@
 import React, { SetStateAction, useEffect } from "react";
 import classes from "./ColorsContainer.module.scss";
-import { Colors } from "../App";
-import ColorItem from "./ColorItem";
+import { Colors } from "../../App";
+import ColorItem from "../ColorItem/ColorItem";
 
 export type ColorItemProps = Colors & {
   onRemoveColor: (id: string) => void;

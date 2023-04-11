@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import classes from "./NewColor.module.scss";
-import { Colors } from "../App";
-import { hexToRgb } from "../function/hexToRGB";
-import { hexToHSL } from "../function/hexToHSL";
+import { Colors } from "../../App";
+import { hexToRgb } from "../../function/hexToRGB";
+import { hexToHSL } from "../../function/hexToHSL";
 
 interface NewColorProps {
   onAddColor: (enteredColor: Colors) => void;

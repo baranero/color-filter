@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import NewColor from "./components/NewColor";
-import ColorsContainer, { ColorItemProps } from "./components/ColorsContainer";
+import NewColor from "./components/NewColor/NewColor";
+import ColorsContainer from "./components/ColorsContainer/ColorsContainer";
 import { defaultColors } from "./data/defaultColors";
-import ColorsFilter from "./components/ColorsFilter";
+import ColorsFilter from "./components/ColorsFilter/ColorsFilter";
 
 export interface Colors {
   id: string;
