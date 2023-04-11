@@ -115,6 +115,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
 
     // check if length is correct
     if (enteredColor.hexColor.length < 7) {
+      setError(true)
       return;
     }
 
@@ -128,6 +129,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
     event.preventDefault();
     onAddColor(enteredColor);
     setEnteredColor(defaultValues);
+    setError(false)
   };
 
   return (
