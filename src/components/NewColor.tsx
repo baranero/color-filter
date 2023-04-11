@@ -23,7 +23,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
 
   const invalidCharacters = /[^a-fA-F0-9#]/g;
   const validCharacters = /[a-fA-F0-9]/g;
-  console.log();
+  
   
 
   // check if "#" sign is on 1 index or further
@@ -37,11 +37,12 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
   ): void => {
 
     // use values from autocomplete
-    if (event.target.value.length >= 7) {
+    if (event.target.value.length === 7) {
+      console.log(1);
       setError(false)
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
-        hexColor: event.target.value.toUpperCase(),
+        hexColor: event.target.value.replace(invalidCharacters, "").toUpperCase(),
         rgbColor: hexToRgb(event.target.value)!,
         hslColor: hexToHSL(event.target.value),
         addedByUser: true,
@@ -50,6 +51,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
 
     //  remove invalid character
     else if (event.target.value.match(invalidCharacters)) {
+      console.log(2);
       setError(true)
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
@@ -64,6 +66,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
       event.target.value.match(validCharacters) &&
       enteredColor.hexColor.length < 1
     ) {
+      console.log(3);
       setError(true)
       setEnteredColor({
         id: Math.random().toString(16).slice(2),
@@ -75,10 +78,11 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
 
       // set value and remove "#" in the middle of value
     } else if (correctFirstCharacter && enteredColor.hexColor.length) {
-
+      console.log(4);
       if (event.target.value.slice(-1) === "#") {
         setError(true)
       } else {
+        console.log(5);
         setError(false)
       }
       
@@ -108,7 +112,6 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
       });
     }
   };
-console.log(enteredColor);
 
   const submitHandler = (event: React.FormEvent): void => {
     if (enteredColor.hexColor.length < 7) {
@@ -146,7 +149,7 @@ console.log(enteredColor);
         ""
       ) : (
         <p className={classes["color-form-warning"]}>
-          You can use # sign only as first
+          Invalid value!
         </p>
       )}
       <button className={classes["color-form-button"]} type="submit">
