@@ -1,4 +1,4 @@
-# Recruitment task - GoOnline
+# Color - filter
 
 ## Run locally - download
 
