@@ -1,4 +1,4 @@
-# Color - filter
+# Colors-filter
 
 ## Run locally - download
 
@@ -45,5 +45,5 @@ You will also see any lint errors in the console.
 
 ## Watch live
 
-Task is available at: [https://baranero.github.io/frontend-task/](https://baranero.github.io/frontend-task/)
+Task is available at: [https://baranero.github.io/colors-filter/](https://baranero.github.io/colors-filter/)
 
