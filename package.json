@@ -1,7 +1,7 @@
 {
-  "name": "frontend-task",
+  "name": "colors-filter",
   "version": "0.1.0",
-  "homepage": "https://baranero.github.io/frontend-task",
+  "homepage": "https://baranero.github.io/colors-filter",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",

@@ -43,7 +43,7 @@ const App: React.FC = () => {
   // remove color added by user
   const removeColor = (id: string) => {
     // remove color from array
-    let colorToRemove = colorsArray.filter((item) => item.id !== id);
+    let colorToRemove = colorsArray.filter((item: any) => item.id !== id);
     setColorsArray(colorToRemove);
     localStorage.setItem("enteredColors", JSON.stringify(colorToRemove));
   };
