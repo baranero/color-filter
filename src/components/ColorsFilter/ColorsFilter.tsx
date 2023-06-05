@@ -1,16 +1,16 @@
 import React, { SetStateAction, useEffect, useState } from "react";
-import { Colors } from "../../App";
+import { Color } from "../../App";
 import classes from "./ColorsFilter.module.scss";
 import { colorsToSort } from "../../function/colorsToSort";
 
 interface ColorsFilterProps {
-  setFilteredColors: React.Dispatch<SetStateAction<Colors[]>>;
-  colorsArray: Colors[];
+  setFilteredColors: React.Dispatch<SetStateAction<Color[]>>;
+  colors: Color[];
 }
 
 const ColorsFilter: React.FC<ColorsFilterProps> = ({
   setFilteredColors,
-  colorsArray,
+  colors,
 }) => {
 
   // inputs check states
@@ -24,7 +24,7 @@ const ColorsFilter: React.FC<ColorsFilterProps> = ({
     setFilteredColors(
 
       // sort and filter colorsArray
-      [...colorsArray].sort(colorsToSort).filter((item: Colors) => {
+      [...colors].sort(colorsToSort).filter((item: Color) => {
 
         // check if red input is checked and red in RGB is less or equal to 127
         if (redColorFilter && item.rgbColor.r <= 127) {
@@ -51,7 +51,7 @@ const ColorsFilter: React.FC<ColorsFilterProps> = ({
     );
   }, [
     setFilteredColors,
-    colorsArray?.length,
+    colors?.length,
     redColorFilter,
     greenColorFilter,
     blueColorFilter,

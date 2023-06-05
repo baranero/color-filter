@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import classes from "./NewColor.module.scss";
-import { Colors } from "../../App";
+import { Color } from "../../App";
 import { hexToRgb } from "../../function/hexToRGB";
 import { hexToHSL } from "../../function/hexToHSL";
 
 interface NewColorProps {
-  onAddColor: (enteredColor: Colors) => void;
-  colorsArray: Colors[];
+  onAddColor: (enteredColor: Color) => void;
+  colors: Color[];
 }
 
-const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
+const NewColor: React.FC<NewColorProps> = ({ onAddColor, colors }) => {
   const defaultValues = {
     id: "",
     hexColor: "",
@@ -18,7 +18,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
     addedByUser: true,
   };
 
-  const [enteredColor, setEnteredColor] = useState<Colors>(defaultValues);
+  const [enteredColor, setEnteredColor] = useState<Color>(defaultValues);
 
   // set state if inputed character is invalid
   const [error, setError] = useState<boolean>(false);
@@ -122,7 +122,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
 
     // check if color is unique
     if (
-      colorsArray.filter((item) => item.hexColor === enteredColor.hexColor)
+      colors.filter((item) => item.hexColor === enteredColor.hexColor)
         .length
     ) {
       alert("Color already exists!")

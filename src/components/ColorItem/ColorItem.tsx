@@ -1,12 +1,12 @@
 import { Component } from "react";
 import classes from "./ColorItem.module.scss";
-import { Colors } from "../../App";
+import { Color } from "../../App";
 import { ColorItemProps } from "../ColorsContainer/ColorsContainer";
 
 // class component
 class ColorItem extends Component<
   ColorItemProps,
-  { colorsArrayLocalStorage: Colors[] }
+  { colorsArrayLocalStorage: Color[] }
 > {
   constructor(props: ColorItemProps) {
     super(props);
@@ -17,12 +17,12 @@ class ColorItem extends Component<
     };
   }
 
-  colorToRemove: Colors[] = [];
+  colorToRemove: Color[] = [];
 
   // remove color from id
   removeColor = (id: string) => {
     this.colorToRemove = this.state.colorsArrayLocalStorage.filter(
-      (item: Colors) => item.id !== id
+      (item: Color) => item.id !== id
     );
     localStorage.setItem("enteredColors", JSON.stringify(this.colorToRemove));
     this.props.onRemoveColor(this.props.id);

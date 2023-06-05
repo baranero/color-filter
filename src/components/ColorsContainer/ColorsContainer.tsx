@@ -1,20 +1,18 @@
 import { useEffect } from "react";
 import classes from "./ColorsContainer.module.scss";
-import { Colors } from "../../App";
+import { Color } from "../../App";
 import ColorItem from "../ColorItem/ColorItem";
 
-export type ColorItemProps = Colors & {
+export type ColorItemProps = Color & {
   onRemoveColor: (id: string) => void;
 };
 
 interface ColorsContainerProps {
-  sortedColors: Colors[];
-  filteredColors: Colors[];
+  filteredColors: Color[];
   onRemoveColor: (id: string) => void;
 }
 
 const ColorsContainer: React.FC<ColorsContainerProps> = ({
-  sortedColors,
   onRemoveColor,
   filteredColors,
 }) => {
@@ -38,16 +36,16 @@ const ColorsContainer: React.FC<ColorsContainerProps> = ({
           );
         }
       } else {
-        for (let i = 0; i < sortedColors?.length; i++) {
+        for (let i = 0; i < filteredColors?.length; i++) {
           // set colors for whole array
           document.documentElement.style.setProperty(
             `--color-user-${i + 1}`,
-            sortedColors[i].hexColor
+            filteredColors[i].hexColor
           );
         }
       }
     }
-  }, [filteredColors, sortedColors?.length, colorsFromLocalStorage]);
+  }, [filteredColors, colorsFromLocalStorage]);
 
   //pass remove function through components
   const removeColorFromArray = (color: string) => {
@@ -78,7 +76,7 @@ const ColorsContainer: React.FC<ColorsContainerProps> = ({
     return (
       <div className={classes["colors"]}>
         {filteredColors &&
-          filteredColors?.map((item: Colors) => {
+          filteredColors?.map((item: Color) => {
             return (
               <div key={item.id} className={classes["colors-container"]}>
                 <ColorItem
@@ -98,8 +96,8 @@ const ColorsContainer: React.FC<ColorsContainerProps> = ({
   } else {
     return (
       <div className={classes["colors"]}>
-        {sortedColors &&
-          sortedColors?.map((item: Colors) => {
+        {filteredColors &&
+          filteredColors?.map((item: Color) => {
             return (
               <div key={item.id} className={classes["colors-container"]}>
                 <ColorItem

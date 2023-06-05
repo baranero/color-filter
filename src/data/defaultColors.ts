@@ -1,6 +1,6 @@
-import { Colors } from "../App";
+import { Color } from "../App";
 
-export const defaultColors: Colors[] = [
+export const defaultColors: Color[] = [
   {
     id: "1",
     hexColor: "#FF0000",
