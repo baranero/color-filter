@@ -5,7 +5,7 @@ import { defaultColors } from "./data/defaultColors";
 import ColorsFilter from "./components/ColorsFilter/ColorsFilter";
 import { colorsToSort } from "./function/colorsToSort";
 
-export interface Color {
+export interface Colors {
   id: string;
   hexColor: string;
   rgbColor: { r: number; g: number; b: number };
@@ -14,43 +14,46 @@ export interface Color {
 }
 
 const App: React.FC = () => {
-  const [colors, setColors] = useState<Color[]>([]);
-  const [filteredColors, setFilteredColors] = useState<Color[]>([]);
+  const [colorsArray, setColorsArray] = useState<Colors[]>([]);
+  const [filteredColors, setFilteredColors] = useState<Colors[]>([]);
+  const [sortedColors, setSortedColors] = useState<Colors[]>([]);
+
+  const colorsFromLocalStorage = JSON.parse(localStorage.getItem("enteredColors")!);
 
   useEffect(() => {
-    const colorsFromLocalStorage = JSON.parse(
-      localStorage.getItem("enteredColors") || "[]"
-    ) as Color[];
-
-    if (colorsFromLocalStorage.length === 0) {
+    if (!colorsFromLocalStorage) {
       localStorage.setItem("enteredColors", JSON.stringify(defaultColors));
-      setColors(defaultColors);
+      setColorsArray(defaultColors);
     } else {
-      setColors(colorsFromLocalStorage);
+      setColorsArray(colorsFromLocalStorage);
     }
-  }, []);
 
-  useEffect(() => {
-    const sortedColors = [...colors].sort(colorsToSort);
-    setFilteredColors(sortedColors);
-    localStorage.setItem("enteredColors", JSON.stringify(sortedColors));
-  }, [colors]);
+    if (colorsArray.length > 0) {
+      const sorted = colorsArray.sort(colorsToSort);
+      setSortedColors(sorted);
+      localStorage.setItem("enteredColors", JSON.stringify(sorted));
+    }
+  }, [colorsFromLocalStorage?.length, colorsArray.length, filteredColors.length]);
 
   const removeColor = (id: string) => {
-    const updatedColors = colors.filter((color) => color.id !== id);
-    setColors(updatedColors);
+    const updatedColors = colorsArray.filter((item: Colors) => item.id !== id);
+    setColorsArray(updatedColors);
+    localStorage.setItem("enteredColors", JSON.stringify(updatedColors));
   };
 
-  const addColor = (newColor: Color) => {
-    setColors((prevColors) => [...prevColors, newColor]);
+  const addColorToArray = (color: Colors) => {
+    const updatedColors = [...colorsArray, color];
+    setColorsArray(updatedColors);
+    localStorage.setItem("enteredColors", JSON.stringify(updatedColors));
   };
 
   return (
     <>
-      <NewColor onAddColor={addColor} colors={colors} />
-      <ColorsFilter colors={colors} setFilteredColors={setFilteredColors} />
+      <NewColor onAddColor={addColorToArray} colorsArray={colorsArray} />
+      <ColorsFilter colorsArray={colorsArray} setFilteredColors={setFilteredColors} />
       <ColorsContainer
         filteredColors={filteredColors}
+        sortedColors={sortedColors}
         onRemoveColor={removeColor}
       />
     </>

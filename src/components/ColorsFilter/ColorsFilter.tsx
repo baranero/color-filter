@@ -1,69 +1,71 @@
 import React, { SetStateAction, useEffect, useState } from "react";
-import { Color } from "../../App";
+import { Colors } from "../../App";
 import classes from "./ColorsFilter.module.scss";
 import { colorsToSort } from "../../function/colorsToSort";
 
 interface ColorsFilterProps {
-  setFilteredColors: React.Dispatch<SetStateAction<Color[]>>;
-  colors: Color[];
+  setFilteredColors: React.Dispatch<SetStateAction<Colors[]>>;
+  colorsArray: Colors[];
 }
 
 const ColorsFilter: React.FC<ColorsFilterProps> = ({
   setFilteredColors,
-  colors,
+  colorsArray,
 }) => {
-
-  // inputs check states
   const [redColorFilter, setRedColorFilter] = useState<boolean>(false);
   const [greenColorFilter, setGreenColorFilter] = useState<boolean>(false);
   const [blueColorFilter, setBlueColorFilter] = useState<boolean>(false);
   const [saturationFilter, setSaturationFilter] = useState<boolean>(false);
 
-  // array with filtered colors
   useEffect(() => {
-    setFilteredColors(
+    const filteredColors = [...colorsArray].sort(colorsToSort).filter((item: Colors) => {
+      if (redColorFilter && item.rgbColor.r <= 127) {
+        return false;
+      }
 
-      // sort and filter colorsArray
-      [...colors].sort(colorsToSort).filter((item: Color) => {
+      if (greenColorFilter && item.rgbColor.g <= 127) {
+        return false;
+      }
 
-        // check if red input is checked and red in RGB is less or equal to 127
-        if (redColorFilter && item.rgbColor.r <= 127) {
-          return false;
-        }
+      if (blueColorFilter && item.rgbColor.b <= 127) {
+        return false;
+      }
 
-         // check if green input is checked and green in RGB is less or equal to 127
-        if (greenColorFilter && item.rgbColor.g <= 127) {
-          return false;
-        }
+      if (saturationFilter && item.hslColor.s <= 50) {
+        return false;
+      }
 
-         // check if blue input is checked and blue in RGB is less or equal to 127
-        if (blueColorFilter && item.rgbColor.b <= 127) {
-          return false;
-        }
+      return true;
+    });
 
-         // check if saturation input is checked and saturation in HSL is less or equal to 127
-        if (saturationFilter && item.hslColor.s <= 50) {
-          return false;
-        }
+    setFilteredColors(filteredColors);
+  }, [setFilteredColors, colorsArray, redColorFilter, greenColorFilter, blueColorFilter, saturationFilter]);
 
-        return true;
-      })
-    );
-  }, [
-    setFilteredColors,
-    colors?.length,
-    redColorFilter,
-    greenColorFilter,
-    blueColorFilter,
-    saturationFilter,
-  ]);
+  const handleColorFilterChange = (filter: string) => {
+    switch (filter) {
+      case "red":
+        setRedColorFilter(!redColorFilter);
+        break;
+      case "green":
+        setGreenColorFilter(!greenColorFilter);
+        break;
+      case "blue":
+        setBlueColorFilter(!blueColorFilter);
+        break;
+      case "saturation":
+        setSaturationFilter(!saturationFilter);
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <div className={classes["colors-filter-container"]}>
       <div className={classes["colors-filter-item"]}>
         <input
           type="checkbox"
-          onChange={() => setRedColorFilter(!redColorFilter)}
+          onChange={() => handleColorFilterChange("red")}
           checked={redColorFilter}
           value="red"
           name="red"
@@ -75,7 +77,7 @@ const ColorsFilter: React.FC<ColorsFilterProps> = ({
       <div className={classes["colors-filter-item"]}>
         <input
           type="checkbox"
-          onChange={() => setGreenColorFilter(!greenColorFilter)}
+          onChange={() => handleColorFilterChange("green")}
           checked={greenColorFilter}
           value="green"
           name="green"
@@ -87,7 +89,7 @@ const ColorsFilter: React.FC<ColorsFilterProps> = ({
       <div className={classes["colors-filter-item"]}>
         <input
           type="checkbox"
-          onChange={() => setBlueColorFilter(!blueColorFilter)}
+          onChange={() => handleColorFilterChange("blue")}
           checked={blueColorFilter}
           value="blue"
           name="blue"
@@ -99,7 +101,7 @@ const ColorsFilter: React.FC<ColorsFilterProps> = ({
       <div className={classes["colors-filter-item"]}>
         <input
           type="checkbox"
-          onChange={() => setSaturationFilter(!saturationFilter)}
+          onChange={() => handleColorFilterChange("saturation")}
           checked={saturationFilter}
           value="saturation"
           name="saturation"

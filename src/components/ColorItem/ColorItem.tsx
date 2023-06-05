@@ -1,48 +1,41 @@
 import { Component } from "react";
 import classes from "./ColorItem.module.scss";
-import { Color } from "../../App";
+import { Colors } from "../../App";
 import { ColorItemProps } from "../ColorsContainer/ColorsContainer";
 
-// class component
-class ColorItem extends Component<
-  ColorItemProps,
-  { colorsArrayLocalStorage: Color[] }
-> {
+class ColorItem extends Component<ColorItemProps, { colorsArrayLocalStorage: Colors[] }> {
+  colorToRemove: Colors[] = [];
+
   constructor(props: ColorItemProps) {
     super(props);
     this.state = {
-      colorsArrayLocalStorage: JSON.parse(
-        localStorage.getItem("enteredColors")!
-      ),
+      colorsArrayLocalStorage: JSON.parse(localStorage.getItem("enteredColors")!),
     };
   }
 
-  colorToRemove: Color[] = [];
-
-  // remove color from id
   removeColor = (id: string) => {
-    this.colorToRemove = this.state.colorsArrayLocalStorage.filter(
-      (item: Color) => item.id !== id
-    );
+    this.colorToRemove = this.state.colorsArrayLocalStorage.filter((item: Colors) => item.id !== id);
     localStorage.setItem("enteredColors", JSON.stringify(this.colorToRemove));
     this.props.onRemoveColor(this.props.id);
   };
 
   render() {
+    const { addedByUser, id, hexColor } = this.props;
+
     return (
       <>
         <div className={classes["color-item"]}>
-          {this.props.addedByUser && (
+          {addedByUser && (
             <button
-              value={this.props.id}
-              onClick={(event) => this.removeColor(this.props.id)}
+              value={id}
+              onClick={(event) => this.removeColor(id)}
               className={classes["color-item-button"]}
             >
               X
             </button>
           )}
         </div>
-        <p className={classes["color-name"]}>{this.props.hexColor}</p>
+        <p className={classes["color-name"]}>{hexColor}</p>
       </>
     );
   }

@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import classes from "./NewColor.module.scss";
-import { Color } from "../../App";
+import { Colors } from "../../App";
 import { hexToRgb } from "../../function/hexToRGB";
 import { hexToHSL } from "../../function/hexToHSL";
 
 interface NewColorProps {
-  onAddColor: (enteredColor: Color) => void;
-  colors: Color[];
+  onAddColor: (enteredColor: Colors) => void;
+  colorsArray: Colors[];
 }
 
-const NewColor: React.FC<NewColorProps> = ({ onAddColor, colors }) => {
+const NewColor: React.FC<NewColorProps> = ({ onAddColor, colorsArray }) => {
   const defaultValues = {
     id: "",
     hexColor: "",
@@ -18,120 +18,91 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colors }) => {
     addedByUser: true,
   };
 
-  const [enteredColor, setEnteredColor] = useState<Color>(defaultValues);
-
-  // set state if inputed character is invalid
+  const [enteredColor, setEnteredColor] = useState<Colors>(defaultValues);
   const [error, setError] = useState<boolean>(false);
 
-  // regular expressions with invalid characters
-  const invalidCharacters = /[^a-fA-F0-9#]/g;
-
-  // regular expressions with valid characters
-  const validCharacters = /[a-fA-F0-9]/g;
-
-  // check if "#" sign is on 1 index or further
-  const correctFirstCharacter: boolean =
-    enteredColor.hexColor.includes("#", 0) ||
-    enteredColor.hexColor.includes("", 0);
-
-  // color input form
-  const colorChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    // use values from autocomplete
-    if (event.target.value.length === 7) {
+  const colorChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const value = event.target.value;
+  
+    if (value.length > 7) {
+      return;
+    }
+  
+    const validCharacters = /^[A-Fa-f0-9]*$/;
+  
+    if (value.length === 0 || (value.length === 1 && value === "#")) {
       setError(false);
-      setEnteredColor({
-        id: Math.random().toString(16).slice(2),
-        hexColor: event.target.value
-          .replace(invalidCharacters, "")
-          .toUpperCase(),
-        rgbColor: hexToRgb(event.target.value)!,
-        hslColor: hexToHSL(event.target.value),
-        addedByUser: true,
-      });
-    }
-
-    //  remove invalid character
-    else if (event.target.value.match(invalidCharacters)) {
+    } else if (value.length === 1 && value !== "#") {
       setError(true);
-      setEnteredColor({
-        id: Math.random().toString(16).slice(2),
-        hexColor: event.target.value.replace(invalidCharacters, ""),
-        rgbColor: hexToRgb(event.target.value)!,
-        hslColor: hexToHSL(event.target.value),
-        addedByUser: true,
-      });
-
-      // remove "#" except the first one
-    } else if (
-      event.target.value.match(validCharacters) &&
-      enteredColor.hexColor.length < 1
-    ) {
-      setError(true);
-      setEnteredColor({
-        id: Math.random().toString(16).slice(2),
-        hexColor: event.target.value.replace(validCharacters, "").toUpperCase(),
-        rgbColor: hexToRgb(event.target.value)!,
-        hslColor: hexToHSL(event.target.value),
-        addedByUser: true,
-      });
-
-      // set value and remove "#" in the middle of value
-    } else if (correctFirstCharacter && enteredColor.hexColor.length) {
-      if (event.target.value.slice(-1) === "#") {
-        setError(true);
-      } else {
-        setError(false);
+      return;
+    } else if (value.length > 1 && value.length < 7) {
+      if (!validCharacters.test(value.slice(1))) {
+        return;
       }
-
-      setEnteredColor({
-        id: Math.random().toString(16).slice(2),
-        hexColor: event.target.value.replace(/([^])(#)/g, "$1").toUpperCase(),
-        rgbColor: hexToRgb(event.target.value)!,
-        hslColor: hexToHSL(event.target.value),
-        addedByUser: true,
-      });
-
-      // don't let to type valid character on first place
+      setError(false);
+    } else if (value.length === 7) {
+      if (!validCharacters.test(value.slice(1))) {
+        return;
+      }
+      setError(false);
     } else {
-      if (event.target.value === "#") {
-        setError(false);
-      } else {
-        setError(true);
-      }
-
-      setEnteredColor({
-        id: Math.random().toString(16).slice(2),
-        hexColor: event.target.value.replace(/([^#])(#)/g, "$1").toUpperCase(),
-        rgbColor: hexToRgb(event.target.value)!,
-        hslColor: hexToHSL(event.target.value),
-        addedByUser: true,
-      });
+      setError(true);
+      return;
     }
+  
+    setEnteredColor({
+      id: Math.random().toString(16).slice(2),
+      hexColor: value.toUpperCase().slice(0, 7),
+      rgbColor: hexToRgb(value)!,
+      hslColor: hexToHSL(value),
+      addedByUser: true,
+    });
   };
 
   const submitHandler = (event: React.FormEvent): void => {
-
-    // check if length is correct
-    if (enteredColor.hexColor.length < 7) {
-      alert("Too short! Type 7 characters.")
-      setError(true)
-      return;
-    }
-
-    // check if color is unique
-    if (
-      colors.filter((item) => item.hexColor === enteredColor.hexColor)
-        .length
-    ) {
-      alert("Color already exists!")
-      return;
-    }
     event.preventDefault();
-    onAddColor(enteredColor);
+  
+    if (enteredColor.hexColor.length < 3) {
+      alert("Too short! Type at least 3 characters.");
+      setError(true);
+      return;
+    }
+  
+    let hexValue = enteredColor.hexColor.toUpperCase();
+  
+    // Check if the entered hex color code is a 3-digit code
+    if (hexValue.length === 4 && hexValue[0] === "#") {
+      const r = hexValue[1];
+      const g = hexValue[2];
+      const b = hexValue[3];
+  
+      // Convert the 3-digit code to a 6-digit code
+      hexValue = `#${r}${r}${g}${g}${b}${b}`;
+    }
+  
+    // Check if the hex color code is valid
+    if (!/^#[A-Fa-f0-9]{6}$/.test(hexValue)) {
+      alert("Invalid color format!");
+      setError(true);
+      return;
+    }
+  
+    // Check if the color already exists
+    if (colorsArray.some((item) => item.hexColor === hexValue)) {
+      alert("Color already exists!");
+      return;
+    }
+  
+    onAddColor({
+      id: Math.random().toString(16).slice(2),
+      hexColor: hexValue,
+      rgbColor: hexToRgb(hexValue)!,
+      hslColor: hexToHSL(hexValue),
+      addedByUser: true,
+    });
+  
     setEnteredColor(defaultValues);
-    setError(false)
+    setError(false);
   };
 
   return (
@@ -141,7 +112,7 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colors }) => {
       </label>
       <input
         className={
-          classes[!error ? "color-form-input" : "color-form-input-wrong"]
+          classes[error ? "color-form-input-wrong" : "color-form-input"]
         }
         id="color"
         type="text"
@@ -150,12 +121,13 @@ const NewColor: React.FC<NewColorProps> = ({ onAddColor, colors }) => {
         placeholder="Input color in HEX format (eg. #3F3F3F)"
         maxLength={7}
       />
-      {!error ? (
-        ""
-      ) : (
+      {error && (
         <p className={classes["color-form-warning"]}>Invalid value!</p>
       )}
-      <button className={classes["color-form-button"]} type="submit">
+      <button
+        className={classes["color-form-button"]}
+        type="submit"
+      >
         Add Color
       </button>
     </form>

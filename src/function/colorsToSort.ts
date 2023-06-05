@@ -1,6 +1,6 @@
-import { Color } from "../App";
+import { Colors } from "../App";
 
-export const colorsToSort = (firstColor: Color, secondColor: Color) => {
+export const colorsToSort = (firstColor: Colors, secondColor: Colors) => {
   if (firstColor.rgbColor.r !== secondColor.rgbColor.r) {
     return secondColor.rgbColor.r - firstColor.rgbColor.r;
   }
